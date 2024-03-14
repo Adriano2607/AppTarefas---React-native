@@ -1,5 +1,6 @@
 import { Text, TouchableOpacity } from "react-native";
 import { Category } from "../types/Task";
+import React from "react";
 
 interface Props {
   item: Category;
@@ -16,10 +17,12 @@ const CategoryItem = ({
 
   return (
     <TouchableOpacity
-      style={{ borderColor: naosei ? item.color : "#ccc" }}
+      style={{ borderColor: naosei ? item.color : "#ccc" , borderWidth: 2}}
       onPress={() => handleSelectCategory(item.value)}
     >
       <Text>{item.value}</Text>
     </TouchableOpacity>
   );
 };
+
+export default CategoryItem

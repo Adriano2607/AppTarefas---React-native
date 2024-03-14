@@ -1,9 +1,10 @@
 import { Alert, Text } from "react-native";
 import { Task } from "../types/Task";
 import { categories } from "../utils/data";
-import { View } from "react-native-reanimated/lib/typescript/Animated";
+import { View } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Swipeable } from "react-native-gesture-handler";
+import React from "react";
 
 interface Props {
   task: Task;
