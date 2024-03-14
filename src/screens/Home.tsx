@@ -82,7 +82,7 @@ const Home = () => {
   };
 
   const handleDoneTask = async (id: string) => {
-    const index = taskList.findIndex((i) => i.id === id);
+    const index = taskList.findIndex(i => i.id === id);
     if (index !== -1) {
       const clone = [...taskList];
 
