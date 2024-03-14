@@ -1,4 +1,4 @@
-import { Text, TouchableOpacity } from "react-native";
+import { Text, TouchableOpacity,StyleSheet } from "react-native";
 import { Category } from "../types/Task";
 import React from "react";
 
@@ -17,12 +17,22 @@ const CategoryItem = ({
 
   return (
     <TouchableOpacity
-      style={{ borderColor: naosei ? item.color : "#ccc" , borderWidth: 2}}
+    style={[styles.container, { borderColor: naosei ? item.color : "#ccc", borderWidth: 1 }]}
+      
       onPress={() => handleSelectCategory(item.value)}
     >
-      <Text>{item.value}</Text>
+      <Text style={{ textTransform:'capitalize'}}>{item.value}</Text>
     </TouchableOpacity>
   );
 };
+
+const styles = StyleSheet.create({
+  container:{
+    padding:10,
+    marginBottom:5,
+   
+  }
+
+})
 
 export default CategoryItem
