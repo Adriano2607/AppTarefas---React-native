@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from "react";
-import { View, StyleSheet, FlatList, TextInput, Text, SafeAreaView } from "react-native";
+import { View, StyleSheet, FlatList, TextInput, Text } from "react-native";
 import { Task } from "../types/Task";
 import { v4 as uuid } from "uuid";
 import DropDownPicker from "react-native-dropdown-picker";
@@ -8,6 +8,7 @@ import { categories } from "../utils/data";
 import CategoryItem from "../components/CategoryItem";
 import ItemCard from "../components/ItemCard";
 import "react-native-get-random-values"
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 import React from "react";
 import { Button } from "galio-framework";
