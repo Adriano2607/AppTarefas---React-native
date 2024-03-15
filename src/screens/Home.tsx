@@ -7,8 +7,8 @@ import DropDownPicker from "react-native-dropdown-picker";
 import { categories } from "../utils/data";
 import CategoryItem from "../components/CategoryItem";
 import ItemCard from "../components/ItemCard";
-import "react-native-get-random-values"
-import {SafeAreaView} from 'react-native-safe-area-context';
+import "react-native-get-random-values";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 import React from "react";
 import { Button } from "galio-framework";
@@ -33,21 +33,19 @@ const Home = () => {
       const jsonTasks = JSON.stringify(value);
       await AsyncStorage.setItem("@tasks", jsonTasks);
       setTaskList(value);
-      setFilteredTask(value)
+      setFilteredTask(value);
       console.log("Tarefas salvas com sucesso.");
     } catch (error) {
       console.error("Erro ao salvar tarefas:", error);
     }
   };
 
-
-
   const getTaskAsync = async () => {
     try {
       const jsonValue = await AsyncStorage.getItem("@tasks");
       const tasks = jsonValue !== null ? JSON.parse(jsonValue) : [];
       setTaskList(tasks);
-      setFilteredTask(tasks)
+      setFilteredTask(tasks);
     } catch (error) {
       console.error(error);
     }
@@ -84,9 +82,7 @@ const Home = () => {
 
   const remove = async () => {
     await AsyncStorage.removeItem("@tasks");
-  }
-
-
+  };
 
   const handleRemoveTask = async (taskId: string) => {
     const updatedTasks = taskList.filter((task) => task.id !== taskId);
@@ -94,8 +90,6 @@ const Home = () => {
     await storeTaskAsync(updatedTasks);
 
     await getData();
-
-
   };
 
   const handleDoneTask = async (id: string) => {
@@ -106,7 +100,6 @@ const Home = () => {
       clone[index] = { ...clone[index], completed: true };
       storeTaskAsync(clone);
       await getData();
-
     } else {
       console.error("deu ruim");
     }
@@ -131,76 +124,81 @@ const Home = () => {
   console.log(filteredTask);
 
   return (
-    <SafeAreaView style={{ flex: 1, alignItems: "center", justifyContent: 'center', width: '100%' }}>
-
-      <TextInput
-        style={{
-          borderBottomWidth: 1,
-          padding: 5,
-          marginBottom: 25,
-          width: "80%",
-        }}
-        onChangeText={setTaskInput}
-        value={taskInput}
-        placeholder="INFORME A TAREFA"
-      />
+    <SafeAreaView style={{ backgroundColor: "#252525", height: "100%",flex:1 }}>
       <View>
-        <View>
-          <DropDownPicker
-            open={open}
-            value={categoryValue}
-            items={categories.filter(
-              (c) => c.value != "all" && c.value != "done"
-            )}
-            setOpen={setOpen}
-            setValue={setCategoryValue}
-            placeholder="Escolha uma categoria"
-            theme="DARK"
-            placeholderStyle={{
-              color: "#ccc",
-              fontSize: 12,
-            }}
-            listItemLabelStyle={{
-              color: "#fff",
-              fontSize: 16,
-              paddingLeft: 15,
-            }}
-            dropDownContainerStyle={{
-              backgroundColor: "#11212D",
-            }}
-            selectedItemContainerStyle={{
-              backgroundColor: "#1c2541",
-            }}
-            selectedItemLabelStyle={{
-              fontWeight: "bold",
-              fontSize: 16,
-              color: "#fff",
-            }}
-          />
+        <View style={{flexDirection:'row',alignItems:'center',justifyContent:'center',  marginBottom:20}}>
+        <TextInput
+          style={{
+            borderWidth:1,
+            borderColor:'#FAF8FF',
+            width: "82%",
+            padding:8,
+            borderRadius:5,
+            color: '#FAF8FF' 
+          }}
+          
+          onChangeText={setTaskInput}
+          value={taskInput}
+          placeholder="INFORME A TAREFA"
+          placeholderTextColor="#FAF8FF" 
+        
+
+        />
+
+        <Button
+          onlyIcon
+          icon="create"
+          iconFamily="Ionicons"
+          iconSize={30}
+          color="black"
+          iconColor="#fff"
+          style={{ width: 40, height: 40 }}
+          onPress={handleAddTask}
+        ></Button>
         </View>
+       
 
-        <View>
-          <Button
-            onlyIcon
-            icon="create"
-            iconFamily="Ionicons"
-            iconSize={30}
-            color="black"
-            iconColor="#fff"
-            style={{ width: 40, height: 40 }}
-            onPress={handleAddTask}
+        <DropDownPicker
+          open={open}
+          value={categoryValue}
+          items={categories.filter(
+            (c) => c.value != "all" && c.value != "done"
+          )}
+          setOpen={setOpen}
+          setValue={setCategoryValue}
+          placeholder="Escolha uma categoria"
+          theme="DARK"
+          placeholderStyle={{
+            color: "#FAF8FF",
+            fontSize: 12,
+          }}
+          listItemLabelStyle={{
+            color: "#FAF8FF",
+            fontSize: 16,
+            paddingLeft: 15,
+          }}
+          dropDownContainerStyle={{
+            backgroundColor: "#252525",
+             
+          }}
+          selectedItemContainerStyle={{
+            backgroundColor: "#8685EF",
+          }}
+          selectedItemLabelStyle={{
+            fontWeight: "bold",
+            fontSize: 16,
+            color: "#FAF8FF",
+          }}
+        />
 
-          >
-
-          </Button>
-        </View>
+       
       </View>
 
-      <View style={{ flexDirection: 'column' }}>
+      <View>
         <FlatList
           horizontal
           data={categories}
-
+          showsHorizontalScrollIndicator={false}
           renderItem={({ item }) => (
             <CategoryItem
               handleSelectCategory={handleSelectedCategory}
@@ -210,32 +208,31 @@ const Home = () => {
           )}
           keyExtractor={(item) => item.id.toString()}
         />
-
       </View>
 
-
-      {/* <FlatList
-      style={{width: '100%'}}
+      <FlatList
         data={filteredTask}
-        renderItem={({ item }) => (
-          <ItemCard
-            handleDoneTask={handleDoneTask}
-            handleRemoveTask={handleRemoveTask}
-            task={item}
-          />
-        )}
+        renderItem={({ item }) => {
+          if (selectedCategory === "done" && !item.completed) {
+            return null;
+          }
+          if (selectedCategory !== "done" && item.completed) {
+            return null;
+          }
+          return (
+            <ItemCard
+              handleDoneTask={handleDoneTask}
+              handleRemoveTask={handleRemoveTask}
+              task={item}
+            />
+          );
+        }}
         keyExtractor={(item) => item.id.toString()}
-      /> */}
-
-      <Text>Adriano</Text>
+      />
     </SafeAreaView>
   );
 };
 
-const styles = StyleSheet.create({
-  cat: {
-    marginBottom: 30
-  }
-})
+
 
 export default Home;

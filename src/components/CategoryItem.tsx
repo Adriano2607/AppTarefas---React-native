@@ -1,4 +1,4 @@
-import { Text, TouchableOpacity,StyleSheet } from "react-native";
+import { Text, TouchableOpacity, StyleSheet } from "react-native";
 import { Category } from "../types/Task";
 import React from "react";
 
@@ -16,23 +16,27 @@ const CategoryItem = ({
   const naosei = selectedCategory === item.value;
 
   return (
-    <TouchableOpacity
-      onPress={() => handleSelectCategory(item.value)}
-    >
-      <Text style={[styles.container, { borderColor: naosei ? item.color : "#ccc", borderWidth: 1 }]}>{item.value.toLocaleUpperCase()}</Text>
+    <TouchableOpacity onPress={() => handleSelectCategory(item.value)}>
+      <Text
+        style={[
+          styles.container,
+          { borderColor: naosei ? item.color : "#FAF8FF", borderRightWidth: .5,backgroundColor: naosei ? item.color : "transparent",color:'white',textAlign:'center'},
+        ]}
+      >
+        {item.value.toLocaleUpperCase()}
+      </Text>
     </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
-  container:{
- 
-  height:30,
- paddingHorizontal: 25,
+  container: {
+    padding: 15,
+    alignItems: "center",
+    justifyContent: "center",
+    marginVertical:25,
+    width:120
+  },
+});
 
-  marginVertical:15,
-  }
-
-})
-
-export default CategoryItem
+export default CategoryItem;

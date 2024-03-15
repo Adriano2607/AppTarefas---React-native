@@ -28,9 +28,14 @@ const ItemCard = ({ task, handleRemoveTask, handleDoneTask }: Props) => {
       <View>
         <MaterialIcons
           name="done"
-          size={20}
-          color="#fff"
-          onPress={() => handleDoneTask(task.id)}
+          size={50}
+          color={category[0].color}
+          onPress={() =>{
+            handleDoneTask(task.id)
+           
+          }}
+            
+           
         />
       </View>
     );
@@ -42,9 +47,9 @@ const ItemCard = ({ task, handleRemoveTask, handleDoneTask }: Props) => {
       <View>
         <MaterialIcons
           name="delete"
-          size={20}
-          color="#fff"
-          onPress={() => handleDelete}
+          size={50}
+          color={category[0].color}
+          onPress={handleDelete}
         />
       </View>
     );
@@ -54,15 +59,20 @@ const ItemCard = ({ task, handleRemoveTask, handleDoneTask }: Props) => {
     <Swipeable renderLeftActions={LeftAction} renderRightActions={RightAction} >
       <View
         style={{
-          borderStyle: "solid",
-          height: "100%",
-          borderLeftWidth: 6,
+          borderBottomWidth:2,
+          borderRightWidth:5,
           borderColor: category[0].color,
-          marginRight: 10,
-          flex: 1
+          flex: 1,
+          backgroundColor:'#3B3948',
+          padding:10,
+          marginVertical:10,
+          borderRadius:5,
+          
+          height:40
+        
         }}
       >
-        <Text>{task.title}</Text>
+        <Text style={{color:'#FAF8FF'}}>{task.title}</Text>
       </View>
     </Swipeable>
   );
