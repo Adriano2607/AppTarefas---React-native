@@ -17,20 +17,20 @@ const CategoryItem = ({
 
   return (
     <TouchableOpacity
-    style={[styles.container, { borderColor: naosei ? item.color : "#ccc", borderWidth: 1 }]}
-      
       onPress={() => handleSelectCategory(item.value)}
     >
-      <Text style={{ textTransform:'capitalize'}}>{item.value}</Text>
+      <Text style={[styles.container, { borderColor: naosei ? item.color : "#ccc", borderWidth: 1 }]}>{item.value.toLocaleUpperCase()}</Text>
     </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
   container:{
-    padding:10,
-    marginBottom:5,
-   
+ 
+  height:30,
+ paddingHorizontal: 25,
+
+  marginVertical:15,
   }
 
 })

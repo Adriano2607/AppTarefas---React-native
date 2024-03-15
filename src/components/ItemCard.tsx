@@ -51,7 +51,7 @@ const ItemCard = ({ task, handleRemoveTask, handleDoneTask }: Props) => {
   };
 
   return (
-    <Swipeable renderLeftActions={LeftAction} renderRightActions={RightAction}>
+    <Swipeable renderLeftActions={LeftAction} renderRightActions={RightAction} >
       <View
         style={{
           borderStyle: "solid",
@@ -59,6 +59,7 @@ const ItemCard = ({ task, handleRemoveTask, handleDoneTask }: Props) => {
           borderLeftWidth: 6,
           borderColor: category[0].color,
           marginRight: 10,
+          flex: 1
         }}
       >
         <Text>{task.title}</Text>

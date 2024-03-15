@@ -1,13 +1,13 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from "react";
-import { View, ViewComponent } from "react-native";
+import { View, StyleSheet, FlatList, TextInput, Text, SafeAreaView } from "react-native";
 import { Task } from "../types/Task";
-import { FlatList, TextInput } from "react-native-gesture-handler";
 import { v4 as uuid } from "uuid";
 import DropDownPicker from "react-native-dropdown-picker";
 import { categories } from "../utils/data";
 import CategoryItem from "../components/CategoryItem";
 import ItemCard from "../components/ItemCard";
+import "react-native-get-random-values"
 
 import React from "react";
 import { Button } from "galio-framework";
@@ -31,19 +31,22 @@ const Home = () => {
     try {
       const jsonTasks = JSON.stringify(value);
       await AsyncStorage.setItem("@tasks", jsonTasks);
+      setTaskList(value);
+      setFilteredTask(value)
       console.log("Tarefas salvas com sucesso.");
     } catch (error) {
       console.error("Erro ao salvar tarefas:", error);
     }
   };
 
-  
+
 
   const getTaskAsync = async () => {
     try {
       const jsonValue = await AsyncStorage.getItem("@tasks");
       const tasks = jsonValue !== null ? JSON.parse(jsonValue) : [];
       setTaskList(tasks);
+      setFilteredTask(tasks)
     } catch (error) {
       console.error(error);
     }
@@ -63,7 +66,7 @@ const Home = () => {
     const clone = taskList ? [...taskList] : [];
 
     const task: Task = {
-      id: "1",
+      id: uuid(),
       title: taskInput,
       category: categoryValue,
       completed: false,
@@ -72,21 +75,26 @@ const Home = () => {
     clone.push(task);
 
     await storeTaskAsync(clone);
-    const updatedTasks = await getData();
-    setTaskList(updatedTasks);
+    await getData();
 
     setTaskInput("");
     getData();
   };
+
+  const remove = async () => {
+    await AsyncStorage.removeItem("@tasks");
+  }
+
+
 
   const handleRemoveTask = async (taskId: string) => {
     const updatedTasks = taskList.filter((task) => task.id !== taskId);
 
     await storeTaskAsync(updatedTasks);
 
-    const updatedData = await getData();
+    await getData();
 
-    setTaskList(updatedData);
+
   };
 
   const handleDoneTask = async (id: string) => {
@@ -96,8 +104,8 @@ const Home = () => {
 
       clone[index] = { ...clone[index], completed: true };
       storeTaskAsync(clone);
-      const updatedData = await getData();
-      setTaskList(updatedData);
+      await getData();
+
     } else {
       console.error("deu ruim");
     }
@@ -122,7 +130,8 @@ const Home = () => {
   console.log(filteredTask);
 
   return (
-    <View style={{ flex: 1, alignItems: "center" }}>
+    <SafeAreaView style={{ flex: 1, alignItems: "center", justifyContent: 'center', width: '100%' }}>
+
       <TextInput
         style={{
           borderBottomWidth: 1,
@@ -134,15 +143,7 @@ const Home = () => {
         value={taskInput}
         placeholder="INFORME A TAREFA"
       />
-      <View
-        style={{
-          flexDirection: "row",
-          width: "60%",
-          alignItems: "center",
-          justifyContent: "center",
-          gap: 5,
-        }}
-      >
+      <View>
         <View>
           <DropDownPicker
             open={open}
@@ -187,26 +188,33 @@ const Home = () => {
             iconColor="#fff"
             style={{ width: 40, height: 40 }}
             onPress={handleAddTask}
-           
+
           >
-           
+
           </Button>
         </View>
       </View>
 
-      <FlatList
-        data={categories}
-        renderItem={({ item }) => (
-          <CategoryItem
-            handleSelectCategory={handleSelectedCategory}
-            item={item}
-            selectedCategory={selectedCategory}
-          />
-        )}
-        keyExtractor={(item) => item.id.toString()}
-      />
+      <View style={{ flexDirection: 'column' }}>
+        <FlatList
+          horizontal
+          data={categories}
 
-      <FlatList
+          renderItem={({ item }) => (
+            <CategoryItem
+              handleSelectCategory={handleSelectedCategory}
+              item={item}
+              selectedCategory={selectedCategory}
+            />
+          )}
+          keyExtractor={(item) => item.id.toString()}
+        />
+
+      </View>
+
+
+      {/* <FlatList
+      style={{width: '100%'}}
         data={filteredTask}
         renderItem={({ item }) => (
           <ItemCard
@@ -216,9 +224,17 @@ const Home = () => {
           />
         )}
         keyExtractor={(item) => item.id.toString()}
-      />
-    </View>
+      /> */}
+
+      <Text>Adriano</Text>
+    </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  cat: {
+    marginBottom: 30
+  }
+})
 
 export default Home;
