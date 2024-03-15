@@ -20,7 +20,13 @@ const CategoryItem = ({
       <Text
         style={[
           styles.container,
-          { borderColor: naosei ? item.color : "#FAF8FF", borderRightWidth: .5,backgroundColor: naosei ? item.color : "transparent",color:'white',textAlign:'center'},
+          {
+            borderColor: naosei ? item.color : "#FAF8FF",
+            borderRightWidth: 0.5,
+            backgroundColor: naosei ? item.color : "transparent",
+            color: "white",
+            textAlign: "center",
+          },
         ]}
       >
         {item.value.toLocaleUpperCase()}
@@ -34,8 +40,8 @@ const styles = StyleSheet.create({
     padding: 15,
     alignItems: "center",
     justifyContent: "center",
-    marginVertical:25,
-    width:120
+    marginVertical: 25,
+    width: 120,
   },
 });
 
