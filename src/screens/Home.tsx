@@ -124,39 +124,45 @@ const Home = () => {
   console.log(filteredTask);
 
   return (
-    <SafeAreaView style={{ backgroundColor: "#252525", height: "100%",flex:1 }}>
-      <View>
-        <View style={{flexDirection:'row',alignItems:'center',justifyContent:'center',  marginBottom:20}}>
-        <TextInput
+    <SafeAreaView
+      style={{ backgroundColor: "#252525", height: "100%"}}
+    >
+      <View style={{width:'100%'}}>
+        <View
           style={{
-            borderWidth:1,
-            borderColor:'#FAF8FF',
-            width: "82%",
-            padding:8,
-            borderRadius:5,
-            color: '#FAF8FF' 
+            flexDirection: "row",
+            marginBottom: 20,
+            width:'100%',
+            alignItems:'center'
           }}
-          
-          onChangeText={setTaskInput}
-          value={taskInput}
-          placeholder="INFORME A TAREFA"
-          placeholderTextColor="#FAF8FF" 
-        
+        >
+          <TextInput
+            style={{
+              borderWidth: 1,
+              borderColor: "#FAF8FF",
+              width: "82%",
+              padding: 8,
+              borderRadius: 5,
+              color: "#FAF8FF",
+              height:50
+            }}
+            onChangeText={setTaskInput}
+            value={taskInput}
+            placeholder="INFORME A TAREFA"
+            placeholderTextColor="#FAF8FF"
+          />
 
-        />
-
-        <Button
-          onlyIcon
-          icon="create"
-          iconFamily="Ionicons"
-          iconSize={30}
-          color="black"
-          iconColor="#fff"
-          style={{ width: 40, height: 40 }}
-          onPress={handleAddTask}
-        ></Button>
+          <Button
+            onlyIcon
+            icon="add-box"
+            iconFamily="MaterialIcons"
+            iconSize={50}
+            color="transparent"
+            iconColor="#FAF8FF"
+            style={{ width: 70, height: 50 }}
+            onPress={handleAddTask}
+          ></Button>
         </View>
-       
 
         <DropDownPicker
           open={open}
@@ -179,7 +185,6 @@ const Home = () => {
           }}
           dropDownContainerStyle={{
             backgroundColor: "#252525",
-             
           }}
           selectedItemContainerStyle={{
             backgroundColor: "#8685EF",
@@ -190,8 +195,6 @@ const Home = () => {
             color: "#FAF8FF",
           }}
         />
-
-       
       </View>
 
       <View>
@@ -232,7 +235,5 @@ const Home = () => {
     </SafeAreaView>
   );
 };
-
-
 
 export default Home;

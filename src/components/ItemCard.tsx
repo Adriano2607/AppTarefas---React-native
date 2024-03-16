@@ -23,19 +23,23 @@ const ItemCard = ({ task, handleRemoveTask, handleDoneTask }: Props) => {
   };
 
   const LeftAction = () => {
+
+    if (task.category === "done" && !task.completed) {
+      return null;
+    }
+    if (task.category !== "done" && task.completed) {
+      return null;
+    }
     return (
-      //colocar css
-      <View>
+      <View style={{justifyContent:'center'}}>
         <MaterialIcons
+        style={{marginRight:35}}
           name="done"
-          size={50}
+          size={35}
           color={category[0].color}
-          onPress={() =>{
-            handleDoneTask(task.id)
-           
+          onPress={() => {
+            handleDoneTask(task.id);
           }}
-            
-           
         />
       </View>
     );
@@ -44,10 +48,11 @@ const ItemCard = ({ task, handleRemoveTask, handleDoneTask }: Props) => {
   const RightAction = () => {
     return (
       //colocar css
-      <View>
+      <View style={{justifyContent:'center'}}>
         <MaterialIcons
+          style={{marginLeft:35}}
           name="delete"
-          size={50}
+          size={35}
           color={category[0].color}
           onPress={handleDelete}
         />
@@ -56,27 +61,29 @@ const ItemCard = ({ task, handleRemoveTask, handleDoneTask }: Props) => {
   };
 
   return (
-    <Swipeable renderLeftActions={LeftAction} renderRightActions={RightAction} >
-      <View
-        style={{
-          borderBottomWidth:2,
-          borderRightWidth:5,
-          borderColor: category[0].color,
-          flex: 1,
-          backgroundColor:'#3B3948',
-          padding:10,
-          marginVertical:10,
-          borderRadius:5,
-          
-          height:40
-        
-        }}
+    <View style={{justifyContent:'center',flex:1}}>
+      <Swipeable
+        renderLeftActions={LeftAction}
+        renderRightActions={RightAction}
       >
-        <Text style={{color:'#FAF8FF'}}>{task.title}</Text>
-      </View>
-    </Swipeable>
+        <View
+          style={{
+            borderBottomWidth: 2,
+            borderRightWidth: 5,
+            borderColor: category[0].color,
+            flex: 1,
+            backgroundColor: "#3B3948",
+            padding: 10,
+            marginVertical: 10,
+            borderRadius: 5,
+
+          }}
+        >
+          <Text style={{ color: "#FAF8FF" }}>{task.title}</Text>
+        </View>
+      </Swipeable>
+    </View>
   );
 };
 
-
-export default ItemCard
+export default ItemCard;

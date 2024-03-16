@@ -10,6 +10,8 @@ export default function App() {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <RootSiblingParent>
         <UserContextProvider>
+        <StatusBar backgroundColor="black" style="light"/>
+
           <Routes />
         </UserContextProvider>
       </RootSiblingParent>

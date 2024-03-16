@@ -13,6 +13,16 @@ export const HomeRoutes = () => {
       <Stack.Screen
         name="Home"
         component={Home}
+        options={{
+          headerStyle: { 
+            backgroundColor: '#252525',
+            
+          }, 
+          
+          headerTitleStyle: { color: 'white' }, 
+         
+        }}  
+        
       />
     </Stack.Navigator>
   );
