@@ -2,6 +2,7 @@ import { Text, TouchableOpacity, StyleSheet } from "react-native";
 import { Category } from "../types/Task";
 import React from "react";
 
+
 interface Props {
   item: Category;
   handleSelectCategory: (category: string) => void;
@@ -13,19 +14,21 @@ const CategoryItem = ({
   handleSelectCategory,
   selectedCategory,
 }: Props) => {
-  const naosei = selectedCategory === item.value;
+  const selecionado = selectedCategory === item.value;
 
   return (
     <TouchableOpacity onPress={() => handleSelectCategory(item.value)}>
       <Text
         style={[
           styles.container,
+        
           {
-            borderColor: naosei ? item.color : "#FAF8FF",
-            borderRightWidth: 0.5,
-            backgroundColor: naosei ? item.color : "transparent",
-            color: "white",
+            borderColor: selecionado ? item.color : "transparent",
+            borderWidth: selecionado ? 1 : 0,
+            color:  selecionado ? item.color : 'white',
             textAlign: "center",
+            borderRadius:10,
+          
           },
         ]}
       >

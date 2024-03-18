@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Adriano",
-    "slug": "Adriano",
+    "name": "DiegoCosta",
+    "slug": "DiegoCosta",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -22,14 +22,14 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.adriano2607.Adriano"
+      "package": "com.adriano2607.DiegoCosta"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "extra": {
       "eas": {
-        "projectId": "4724cacb-42f4-4e08-8c20-5ddc18dfdc6d"
+        "projectId": "e3bad1f4-07c3-4fd6-9487-dcc5a5dbe48f"
       }
     }
   }

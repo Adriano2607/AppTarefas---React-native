@@ -76,10 +76,11 @@ const ItemCard = ({ task, handleRemoveTask, handleDoneTask }: Props) => {
             padding: 10,
             marginVertical: 10,
             borderRadius: 5,
-
+            width:'95%',
+            alignSelf:'center',
           }}
         >
-          <Text style={{ color: "#FAF8FF" }}>{task.title}</Text>
+          <Text style={{color:'white'}}>{task.title}</Text>
         </View>
       </Swipeable>
     </View>

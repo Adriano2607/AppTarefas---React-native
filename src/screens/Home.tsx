@@ -1,6 +1,12 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useEffect, useState } from "react";
-import { View, StyleSheet, FlatList, TextInput, Text } from "react-native";
+import { useContext, useEffect, useState } from "react";
+import {
+  View,
+  StyleSheet,
+  FlatList,
+  TextInput,
+  Image,
+} from "react-native";
 import { Task } from "../types/Task";
 import { v4 as uuid } from "uuid";
 import DropDownPicker from "react-native-dropdown-picker";
@@ -9,9 +15,14 @@ import CategoryItem from "../components/CategoryItem";
 import ItemCard from "../components/ItemCard";
 import "react-native-get-random-values";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { Ionicons } from "@expo/vector-icons";
 
 import React from "react";
-import { Button } from "galio-framework";
+import { colors } from "../Colors/colors";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { UserContext } from "../contexts/UserContext";
+import { Text } from "galio-framework";
+
 
 const Home = () => {
   const [taskList, setTaskList] = useState<Task[]>([]);
@@ -20,7 +31,8 @@ const Home = () => {
   const [filteredTask, setFilteredTask] = useState<Task[]>([]);
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [open, setOpen] = useState(false);
-
+  const { getUser, user } = useContext(UserContext);
+ 
   useEffect(() => {
     const fetchData = async () => {
       await getData();
@@ -121,80 +133,101 @@ const Home = () => {
     }
   };
 
-  console.log(filteredTask);
+  //console.log(filteredTask);
+
+  useEffect(() => {
+    getUser();
+  }, []);
+
+
+
 
   return (
-    <SafeAreaView
-      style={{ backgroundColor: "#252525", height: "100%"}}
-    >
-      <View style={{width:'100%'}}>
-        <View
-          style={{
-            flexDirection: "row",
-            marginBottom: 20,
-            width:'100%',
-            alignItems:'center'
-          }}
-        >
-          <TextInput
-            style={{
-              borderWidth: 1,
-              borderColor: "#FAF8FF",
-              width: "82%",
-              padding: 8,
-              borderRadius: 5,
-              color: "#FAF8FF",
-              height:50
-            }}
-            onChangeText={setTaskInput}
-            value={taskInput}
-            placeholder="INFORME A TAREFA"
-            placeholderTextColor="#FAF8FF"
-          />
+    <SafeAreaView style={{ backgroundColor: colors.cor2, flex: 1 }}>
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          marginBottom: 25,
+          width: "95%",
+          alignSelf: "center",
+          alignItems: "center",
+          padding: 10,
+          borderRadius: 10,
+          backgroundColor: colors.cor3,
+          
+        }}
+      >
+        <View>
+          <Text h3 size={21} color="white">
+            Bem-vindo de Volta,
+          </Text>
 
-          <Button
-            onlyIcon
-            icon="add-box"
-            iconFamily="MaterialIcons"
-            iconSize={50}
-            color="transparent"
-            iconColor="#FAF8FF"
-            style={{ width: 70, height: 50 }}
-            onPress={handleAddTask}
-          ></Button>
+          <Text h5 color="white" >
+            {user.firstName + " " + user.lastName}
+          </Text>
         </View>
 
-        <DropDownPicker
-          open={open}
-          value={categoryValue}
-          items={categories.filter(
-            (c) => c.value != "all" && c.value != "done"
-          )}
-          setOpen={setOpen}
-          setValue={setCategoryValue}
-          placeholder="Escolha uma categoria"
-          theme="DARK"
-          placeholderStyle={{
-            color: "#FAF8FF",
-            fontSize: 12,
-          }}
-          listItemLabelStyle={{
-            color: "#FAF8FF",
-            fontSize: 16,
-            paddingLeft: 15,
-          }}
-          dropDownContainerStyle={{
-            backgroundColor: "#252525",
-          }}
-          selectedItemContainerStyle={{
-            backgroundColor: "#8685EF",
-          }}
-          selectedItemLabelStyle={{
-            fontWeight: "bold",
-            fontSize: 16,
-            color: "#FAF8FF",
-          }}
+        <Image style={{ height: 80, width: 80 }} source={{ uri: user.image }} />
+      </View>
+      <View style={styles.textinput}>
+        <TextInput
+          style={styles.input}
+          onChangeText={setTaskInput}
+          value={taskInput}
+          placeholder='Vamos Comecar?'
+          placeholderTextColor={colors.cor6}
+      
+          
         />
+        <View
+          style={{ flexDirection: "row", width: "85%", alignItems: "center" }}
+        >
+          <DropDownPicker
+            open={open}
+            value={categoryValue}
+            items={categories.filter(
+              (c) => c.value != "all" && c.value != "done"
+            )}
+            setOpen={setOpen}
+            setValue={setCategoryValue}
+            placeholder="Escolha uma categoria"
+            theme="LIGHT"
+            placeholderStyle={{
+              color: colors.cor6,
+              fontSize: 18,
+              fontWeight: "800",
+              
+            }}
+            listItemLabelStyle={{
+              color: colors.cor3,
+              fontSize: 18,
+              paddingLeft: 15,
+            }}
+            dropDownContainerStyle={{
+              backgroundColor: colors.cor6,
+            }}
+            selectedItemContainerStyle={{
+              backgroundColor: colors.cor5,
+            }}
+            selectedItemLabelStyle={{
+              fontWeight: "bold",
+              fontSize: 18,
+              color: colors.cor2,
+            }}
+            style={{
+              backgroundColor: "transparent",
+              borderColor: colors.cor6,
+            }}
+          />
+
+          <TouchableOpacity
+            onPress={handleAddTask}
+            style={{ alignItems: "center", paddingLeft: 10 }}
+          >
+            <Ionicons name="add-circle-outline" size={50} color="green" />
+          </TouchableOpacity>
+        </View>
       </View>
 
       <View>
@@ -232,8 +265,36 @@ const Home = () => {
         }}
         keyExtractor={(item) => item.id.toString()}
       />
+
+
+
     </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  textinput: {
+    width: "95%",
+    alignSelf: "center",
+    gap: 15,
+    marginBottom: 10,
+  },input:{
+    borderBottomWidth: 1,
+    borderLeftWidth: 4,
+    borderRightWidth: 4,
+    borderTopWidth: 1,
+
+    width: "100%",
+    paddingLeft: 15,
+    borderRadius: 4,
+    height: 50,
+    borderColor: colors.cor6,
+    borderStyle: "solid",
+
+    fontWeight: "800",
+    fontSize: 17,
+    color: colors.cor6,
+  }
+});
 
 export default Home;

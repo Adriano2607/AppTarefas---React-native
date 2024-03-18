@@ -9,9 +9,7 @@ import { AppRoutes } from "./AppRoutes";
 export const Routes = () => {
  const { getToken, token } = useContext(UserContext);
 
- useEffect(() => {
-    getToken();
-  }, []);
+ 
 
 
 

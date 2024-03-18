@@ -36,8 +36,8 @@ export const AppRoutes = () => {
       screenOptions={{
         headerShown: false,
         tabBarShowLabel: false,
-        tabBarActiveBackgroundColor: colors.corPrincipal,
-        tabBarInactiveBackgroundColor: colors.corPrincipal,
+        tabBarActiveBackgroundColor: colors.cor3,
+        tabBarInactiveBackgroundColor: colors.cor2,
       }}
     >
       <Tab.Screen
@@ -45,7 +45,7 @@ export const AppRoutes = () => {
         component={HomeRoutes}
         options={{
           tabBarIcon: () => (
-            <MaterialIcons name="home" size={30} color="white" />
+            <MaterialIcons name="home" size={30} color={colors.cor6} />
           ),
           headerTransparent: true,
         }}
@@ -55,7 +55,7 @@ export const AppRoutes = () => {
         component={User}
         options={{
           tabBarIcon: () => (
-            <MaterialIcons name="person" size={30} color="white" />
+            <MaterialIcons name="person" size={30} color={colors.cor6} />
           ),
           headerTransparent: true,
         }}

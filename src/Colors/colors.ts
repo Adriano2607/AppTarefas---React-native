@@ -1,6 +1,9 @@
 export const colors = {
-    corPrincipal:'#303030',
-    corBtn:'#FFE3F1',
-    corPreto:'#000000',
-    corSecundaria:'#00C9C8'
+    cor1:'#A0A0A0',
+    cor2:'#252525',
+    cor3:'#4B4B4B',
+    cor4:'#747474',
+    cor5:'#CECECE',
+    cor6:'#fff'
+  
 }

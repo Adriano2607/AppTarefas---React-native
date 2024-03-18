@@ -30,8 +30,8 @@ const User = () => {
         <Text style={{fontStyle:'italic',color:'white'}}>{user ? user.username : "N/A"}</Text>
        
 
-         <Button style={{marginTop:15}} color={colors.corBtn} onPress={logout}>
-             <Text style={{color:'black',fontSize:20}}>Logout</Text> 
+         <Button style={{marginTop:15}} color={colors.cor4} onPress={logout}>
+             <Text style={{color:'white',fontSize:20}}>Logout</Text> 
         </Button> 
       </View>
     </Container>

@@ -3,7 +3,7 @@ export const categories =[
     id:0,
     label:"A Fazer",
     value:"all",
-    color:"#353535"
+    color:"yellow"
 },{
     id:1,
     label:"Pessoal",
