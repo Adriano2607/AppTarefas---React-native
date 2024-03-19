@@ -22,125 +22,132 @@ import { colors } from "../Colors/colors";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { UserContext } from "../contexts/UserContext";
 import { Text } from "galio-framework";
+import * as SQLite from "expo-sqlite"
 
 
 const Home = () => {
   const [taskList, setTaskList] = useState<Task[]>([]);
   const [taskInput, setTaskInput] = useState("");
   const [categoryValue, setCategoryValue] = useState(null);
-  const [filteredTask, setFilteredTask] = useState<Task[]>([]);
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [open, setOpen] = useState(false);
   const { getUser, user } = useContext(UserContext);
+
  
-  useEffect(() => {
-    const fetchData = async () => {
-      await getData();
-    };
-    fetchData();
-  }, []);
-
-  const storeTaskAsync = async (value: Task[]) => {
-    try {
-      const jsonTasks = JSON.stringify(value);
-      await AsyncStorage.setItem("@tasks", jsonTasks);
-      setTaskList(value);
-      setFilteredTask(value);
-      console.log("Tarefas salvas com sucesso.");
-    } catch (error) {
-      console.error("Erro ao salvar tarefas:", error);
-    }
+  const openDatabase = () => {
+    const db = SQLite.openDatabase("db.db");
+    return db;
   };
 
-  const getTaskAsync = async () => {
-    try {
-      const jsonValue = await AsyncStorage.getItem("@tasks");
-      const tasks = jsonValue !== null ? JSON.parse(jsonValue) : [];
-      setTaskList(tasks);
-      setFilteredTask(tasks);
-    } catch (error) {
-      console.error(error);
-    }
+  const db = openDatabase();
+
+  const getTasks = async () => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        `select * from tasks where completed = 0;`,
+        [],
+        (_, { rows: { _array } }) => {
+          setTaskList(_array);
+        }
+      );
+    });
   };
 
-  const getData = async () => {
-    try {
-      await getTaskAsync();
-    } catch (error) {
-      console.error("Erro ao obter dados:", error);
-    }
+  const getTasksByCategory = (category: string) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        `select * from tasks where completed = 0 and category = ?;`,
+        [category],
+        (_, { rows: { _array } }) => {
+          setTaskList(_array);
+        }
+      );
+    });
+  };
+
+  const getCompletedTasks = () => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        `select * from tasks where completed = 1;`,
+        [],
+        (_, { rows: { _array } }) => {
+          setTaskList(_array);
+        }
+      );
+    });
   };
 
   const handleAddTask = async () => {
-    if (!taskInput || !categoryValue) return;
-
-    const clone = taskList ? [...taskList] : [];
-
-    const task: Task = {
-      id: uuid(),
-      title: taskInput,
-      category: categoryValue,
-      completed: false,
-    };
-
-    clone.push(task);
-
-    await storeTaskAsync(clone);
-    await getData();
+    if (taskInput !== "" && categoryValue) {
+      db.transaction((tx) => {
+        tx.executeSql(
+          "insert into tasks (completed, title, category) values (0, ?, ?)",
+          [taskInput, categoryValue]
+        );
+        tx.executeSql(
+          `select * from tasks where completed = 0;`,
+          [],
+          (_, { rows: { _array } }) => {
+            setTaskList(_array);
+          }
+        );
+      });
+    }
 
     setTaskInput("");
-    getData();
+    setCategoryValue(null);
   };
 
-  const remove = async () => {
-    await AsyncStorage.removeItem("@tasks");
+  const handleRemoveTask = (id: number) => {
+    db.transaction((tx) => {
+      tx.executeSql("delete from tasks where id = ?", [id]);
+      tx.executeSql(
+        `select * from tasks where completed = 0;`,
+        [],
+        (_, { rows: { _array } }) => {
+          setTaskList(_array);
+        }
+      );
+    });
   };
 
-  const handleRemoveTask = async (taskId: string) => {
-    const updatedTasks = taskList.filter((task) => task.id !== taskId);
-
-    await storeTaskAsync(updatedTasks);
-
-    await getData();
+  const handleDoneTask = (id: number) => {
+    db.transaction((tx) => {
+      tx.executeSql("update tasks set completed = ? where id = ? ", [1, id]);
+      tx.executeSql(
+        `select * from tasks where completed = 0;`,
+        [],
+        (_, { rows: { _array } }) => {
+          setTaskList(_array);
+        }
+      );
+    });
   };
 
-  const handleDoneTask = async (id: string) => {
-    const index = taskList.findIndex((i) => i.id === id);
-    if (index !== -1) {
-      const clone = [...taskList];
-
-      clone[index] = { ...clone[index], completed: true };
-      storeTaskAsync(clone);
-      await getData();
-    } else {
-      console.error("deu ruim");
-    }
-  };
-
-  const handleSelectedCategory = (type: string) => {
+  const handleSelectCategory = (type: string) => {
     setSelectedCategory(type);
-
     switch (type) {
       case "all":
-        setFilteredTask(taskList.filter((task) => !task.completed));
+        getTasks();
         break;
       case "done":
-        setFilteredTask(taskList.filter((task) => task.completed));
+        getCompletedTasks();
         break;
       default:
-        setFilteredTask(taskList.filter((task) => task.category === type));
-        break;
+        getTasksByCategory(type);
     }
   };
 
-  //console.log(filteredTask);
-
   useEffect(() => {
-    getUser();
+    db.transaction((tx) => {
+      tx.executeSql(
+        "create table if not exists tasks (id integer primary key not null, completed int, title text, category text);"
+      );
+    });
+    getTasks();
   }, []);
 
-
-
+  console.log(taskList)
 
   return (
     <SafeAreaView style={{ backgroundColor: colors.cor2, flex: 1 }}>
@@ -155,7 +162,7 @@ const Home = () => {
           padding: 10,
           borderRadius: 10,
           backgroundColor: colors.cor3,
-          
+
         }}
       >
         <View>
@@ -177,8 +184,8 @@ const Home = () => {
           value={taskInput}
           placeholder='Vamos Comecar?'
           placeholderTextColor={colors.cor6}
-      
-          
+
+
         />
         <View
           style={{ flexDirection: "row", width: "85%", alignItems: "center" }}
@@ -197,7 +204,7 @@ const Home = () => {
               color: colors.cor6,
               fontSize: 18,
               fontWeight: "800",
-              
+
             }}
             listItemLabelStyle={{
               color: colors.cor3,
@@ -237,7 +244,7 @@ const Home = () => {
           showsHorizontalScrollIndicator={false}
           renderItem={({ item }) => (
             <CategoryItem
-              handleSelectCategory={handleSelectedCategory}
+              handleSelectCategory={handleSelectCategory}
               item={item}
               selectedCategory={selectedCategory}
             />
@@ -247,7 +254,7 @@ const Home = () => {
       </View>
 
       <FlatList
-        data={filteredTask}
+        data={taskList }
         renderItem={({ item }) => {
           if (selectedCategory === "done" && !item.completed) {
             return null;
@@ -278,7 +285,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     gap: 15,
     marginBottom: 10,
-  },input:{
+  }, input: {
     borderBottomWidth: 1,
     borderLeftWidth: 4,
     borderRightWidth: 4,

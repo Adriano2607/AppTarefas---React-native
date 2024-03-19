@@ -37,7 +37,8 @@
     "react-native-screens": "~3.29.0",
     "react-native-web": "~0.19.6",
     "styled-components": "^6.1.8",
-    "uuid": "^9.0.1"
+    "uuid": "^9.0.1",
+    "expo-sqlite": "~13.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
