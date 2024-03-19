@@ -20,6 +20,7 @@
     "axios": "^1.6.7",
     "expo": "~50.0.13",
     "expo-splash-screen": "~0.26.4",
+    "expo-sqlite": "~13.3.0",
     "expo-status-bar": "~1.11.1",
     "galio-framework": "^0.8.0",
     "react": "18.2.0",
@@ -37,8 +38,7 @@
     "react-native-screens": "~3.29.0",
     "react-native-web": "~0.19.6",
     "styled-components": "^6.1.8",
-    "uuid": "^9.0.1",
-    "expo-sqlite": "~13.3.0"
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

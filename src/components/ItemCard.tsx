@@ -5,6 +5,9 @@ import { View } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Swipeable } from "react-native-gesture-handler";
 import React from "react";
+import { LightSpeedInRight, LightSpeedOutLeft } from 'react-native-reanimated';
+import Animated from 'react-native-reanimated';
+
 
 interface Props {
   task: Task;
@@ -66,7 +69,9 @@ const ItemCard = ({ task, handleRemoveTask, handleDoneTask }: Props) => {
         renderLeftActions={LeftAction}
         renderRightActions={RightAction}
       >
-        <View
+        <Animated.View
+         entering={LightSpeedInRight}
+          exiting={LightSpeedOutLeft}
           style={{
             borderBottomWidth: 2,
             borderRightWidth: 5,
@@ -81,7 +86,7 @@ const ItemCard = ({ task, handleRemoveTask, handleDoneTask }: Props) => {
           }}
         >
           <Text style={{color:'white'}}>{task.title}</Text>
-        </View>
+        </Animated.View>
       </Swipeable>
     </View>
   );

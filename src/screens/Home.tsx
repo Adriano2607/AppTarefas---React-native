@@ -23,6 +23,9 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { UserContext } from "../contexts/UserContext";
 import { Text } from "galio-framework";
 import * as SQLite from "expo-sqlite"
+import Animated from 'react-native-reanimated';
+import {BounceInDown, FlipInYRight,FlipOutYRight } from "react-native-reanimated"
+
 
 
 const Home = () => {
@@ -193,7 +196,7 @@ const Home = () => {
         <View
           style={{ flexDirection: "row", width: "85%", alignItems: "center" }}
         >
-          <DropDownPicker
+          <DropDownPicker 
             open={open}
             value={categoryValue}
             items={categories.filter(
@@ -228,6 +231,7 @@ const Home = () => {
             style={{
               backgroundColor: "transparent",
               borderColor: colors.cor6,
+             
             }}
           />
 
@@ -241,7 +245,8 @@ const Home = () => {
       </View>
 
       <View>
-        <FlatList
+        <FlatList   
+      
           horizontal
           data={categories}
           showsHorizontalScrollIndicator={false}
@@ -253,10 +258,13 @@ const Home = () => {
             />
           )}
           keyExtractor={(item) => item.id.toString()}
+    
         />
       </View>
 
-      <FlatList
+      <Animated.FlatList
+      entering={FlipInYRight} 
+       exiting={FlipOutYRight}
         data={taskList }
         renderItem={({ item }) => {
           if (selectedCategory === "done" && !item.completed) {

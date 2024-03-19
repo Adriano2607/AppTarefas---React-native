@@ -21,6 +21,13 @@ const Login = () => {
   return (
     <Container style={{ backgroundColor: "black" }}>
     
+    <Image 
+    style={{height:200,width:200}}
+    source={require("../../assets/pngegg.png")}
+
+    />
+
+
       <Input
         style={styles.inputContainer}
         placeholder="Username"
