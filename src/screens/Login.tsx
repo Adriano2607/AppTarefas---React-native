@@ -4,6 +4,7 @@ import {
   Text,
   TouchableOpacity,
   Image,
+  View
 } from "react-native";
 import React, { useContext, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -12,11 +13,24 @@ import { Input, Block } from "galio-framework";
 import { Button } from "galio-framework";
 import { colors } from "../Colors/colors";
 import { Container } from "../styledComponents/styled";
+import Animated from 'react-native-reanimated';
+import { ZoomOut } from 'react-native-reanimated';
+import { StretchInX, StretchOutY } from 'react-native-reanimated';
+import { LightSpeedInRight, LightSpeedOutLeft } from 'react-native-reanimated';
+import { FlipInEasyX, FlipOutEasyX } from 'react-native-reanimated';
+
+import { BounceIn, BounceOut } from 'react-native-reanimated';
+
+
+
+
+
 
 const Login = () => {
   const { login } = useContext(UserContext);
   const [username, setUsername] = useState("yraigatt3");
   const [password, setPassword] = useState("sRQxjPfdS");
+  
 
   return (
     <Container style={{ backgroundColor: "black" }}>
@@ -50,15 +64,20 @@ const Login = () => {
         iconColor={colors.cor4}
       />
 
-      {/* mudar aqui */}
+
+  
+      
+     
+     
       <Button
         textStyle={{ color: "black" }}
         color={colors.cor5}
          onPress={() => login(username, password)}
-         //onPress={() => login("yraigatt3", "sRQxjPfdS")}
-        style={styles.btn}
+      style={styles.btn}
       >LOGIN
       </Button>
+    
+      
     </Container>
   );
 };
@@ -66,6 +85,7 @@ const Login = () => {
 const styles = StyleSheet.create({
   btn: {
     width: "80%",
+    alignItems:'center'
   },
   title: {
     color: "white",

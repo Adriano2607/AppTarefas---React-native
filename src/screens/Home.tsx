@@ -25,6 +25,8 @@ import { Text } from "galio-framework";
 import * as SQLite from "expo-sqlite"
 import Animated from 'react-native-reanimated';
 import {BounceInDown, FlipInYRight,FlipOutYRight } from "react-native-reanimated"
+import { Feather } from '@expo/vector-icons';
+
 
 
 
@@ -226,13 +228,24 @@ const Home = () => {
             selectedItemLabelStyle={{
               fontWeight: "bold",
               fontSize: 18,
-              color: colors.cor2,
+              color: colors.cor6,
+            }}
+            labelStyle={{ 
+              color: colors.cor6, 
+              fontSize:18,
+              fontWeight: "800",
             }}
             style={{
               backgroundColor: "transparent",
               borderColor: colors.cor6,
-             
-            }}
+      
+            }}  ArrowDownIconComponent={() => (
+              <Feather name="arrow-down-circle" size={24} color="white" />
+            )}
+            ArrowUpIconComponent={() => (
+              <Feather name="arrow-up-circle" size={24} color="white" />
+            )}zIndex={999}
+          
           />
 
           <TouchableOpacity
@@ -246,7 +259,7 @@ const Home = () => {
 
       <View>
         <FlatList   
-      
+          style={{zIndex:998}}
           horizontal
           data={categories}
           showsHorizontalScrollIndicator={false}
@@ -258,7 +271,7 @@ const Home = () => {
             />
           )}
           keyExtractor={(item) => item.id.toString()}
-    
+              
         />
       </View>
 

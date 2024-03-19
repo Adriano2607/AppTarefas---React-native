@@ -7,6 +7,9 @@ import { Swipeable } from "react-native-gesture-handler";
 import React from "react";
 import { LightSpeedInRight, LightSpeedOutLeft } from 'react-native-reanimated';
 import Animated from 'react-native-reanimated';
+import { SlideInRight, SlideOutLeft } from 'react-native-reanimated';
+
+
 
 
 interface Props {
@@ -70,8 +73,8 @@ const ItemCard = ({ task, handleRemoveTask, handleDoneTask }: Props) => {
         renderRightActions={RightAction}
       >
         <Animated.View
-         entering={LightSpeedInRight}
-          exiting={LightSpeedOutLeft}
+         entering={SlideInRight}
+       
           style={{
             borderBottomWidth: 2,
             borderRightWidth: 5,
