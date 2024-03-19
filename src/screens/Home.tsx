@@ -41,6 +41,17 @@ const Home = () => {
 
   const db = openDatabase();
 
+  
+  useEffect(() => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        "create table if not exists tasks (id integer primary key not null, completed int, title text, category text);"
+      );
+    });
+    getTasks();
+  }, []);
+  
+
   const getTasks = async () => {
     db.transaction((tx) => {
       tx.executeSql(
@@ -138,14 +149,6 @@ const Home = () => {
     }
   };
 
-  useEffect(() => {
-    db.transaction((tx) => {
-      tx.executeSql(
-        "create table if not exists tasks (id integer primary key not null, completed int, title text, category text);"
-      );
-    });
-    getTasks();
-  }, []);
 
   console.log(taskList)
 
