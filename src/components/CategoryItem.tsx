@@ -29,6 +29,7 @@ const CategoryItem = ({
           color: selecionado ? item.color : "white",
           textAlign: "center",
           borderRadius: 10,
+          fontFamily: 'LuckiestGuy_400Regular'
         }}
       >
         {item.value.toLocaleUpperCase()}

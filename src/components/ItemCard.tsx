@@ -8,6 +8,8 @@ import React from "react";
 import { LightSpeedInRight, LightSpeedOutLeft } from 'react-native-reanimated';
 import Animated from 'react-native-reanimated';
 import { SlideInRight, SlideOutLeft } from 'react-native-reanimated';
+import { useCustomFonts } from '../fonts/useCustomFonts';
+
 
 
 
@@ -66,7 +68,16 @@ const ItemCard = ({ task, handleRemoveTask, handleDoneTask }: Props) => {
     );
   };
 
+  const fontsLoaded = useCustomFonts();
+  
+  if (!fontsLoaded) {
+    return null;
+  }
+
+
   return (
+
+    
     <View style={{justifyContent:'center',flex:1}}>
       <Swipeable
         renderLeftActions={LeftAction}
@@ -88,7 +99,9 @@ const ItemCard = ({ task, handleRemoveTask, handleDoneTask }: Props) => {
             alignSelf:'center',
           }}
         >
-          <Text style={{color:'white'}}>{task.title}</Text>
+              
+
+          <Text style={{color:'white', fontFamily: 'LuckiestGuy_400Regular',}}>{task.title}</Text>
         </Animated.View>
       </Swipeable>
     </View>

@@ -21,16 +21,22 @@ import React from "react";
 import { colors } from "../Colors/colors";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { UserContext } from "../contexts/UserContext";
-import { Text } from "galio-framework";
+import { Text } from "react-native";
 import * as SQLite from "expo-sqlite"
 import Animated from 'react-native-reanimated';
 import {BounceInDown, FlipInYRight,FlipOutYRight } from "react-native-reanimated"
 import { Feather } from '@expo/vector-icons';
-
+import { useFonts, Inter_900Black } from '@expo-google-fonts/inter';
+import { LuckiestGuy_400Regular } from '@expo-google-fonts/luckiest-guy';
 
 
 
 const Home = () => {
+
+ 
+
+
+
   const [taskList, setTaskList] = useState<Task[]>([]);
   const [taskInput, setTaskInput] = useState("");
   const [categoryValue, setCategoryValue] = useState(null);
@@ -156,7 +162,14 @@ const Home = () => {
 
 
   console.log(taskList)
+  let [fontsLoaded, fontError] = useFonts({
+    Inter_900Black,
+    LuckiestGuy_400Regular
+  });
 
+  if (!fontsLoaded && !fontError) {
+    return null;
+  }
   return (
     <SafeAreaView style={{ backgroundColor: colors.cor2, flex: 1 }}>
       <View
@@ -174,11 +187,10 @@ const Home = () => {
         }}
       >
         <View>
-          <Text h3 size={21} color="white">
-            Bem-vindo de Volta,
-          </Text>
+          <Text
+          style={{color:"white", fontFamily: 'Inter_900Black',fontSize:17}}>Bem-vindo de Volta, </Text>
 
-          <Text h5 color="white" >
+          <Text style={{color:"white", fontFamily: 'Inter_900Black',fontSize:19}}>
             {user.firstName + " " + user.lastName}
           </Text>
         </View>
@@ -192,8 +204,6 @@ const Home = () => {
           value={taskInput}
           placeholder='Vamos Comecar?'
           placeholderTextColor={colors.cor6}
-
-
         />
         <View
           style={{ flexDirection: "row", width: "85%", alignItems: "center" }}
@@ -212,6 +222,8 @@ const Home = () => {
               color: colors.cor6,
               fontSize: 18,
               fontWeight: "800",
+              fontFamily: 'LuckiestGuy_400Regular', 
+
 
             }}
             listItemLabelStyle={{
@@ -234,12 +246,20 @@ const Home = () => {
               color: colors.cor6, 
               fontSize:18,
               fontWeight: "800",
+              
             }}
             style={{
               backgroundColor: "transparent",
               borderColor: colors.cor6,
-      
-            }}  ArrowDownIconComponent={() => (
+             
+            }} textStyle={{ 
+              fontSize: 18,
+              fontFamily: 'LuckiestGuy_400Regular', 
+              color: 'black'
+            }}
+            
+
+            ArrowDownIconComponent={() => (
               <Feather name="arrow-down-circle" size={24} color="white" />
             )}
             ArrowUpIconComponent={() => (
@@ -314,7 +334,7 @@ const styles = StyleSheet.create({
     borderLeftWidth: 4,
     borderRightWidth: 4,
     borderTopWidth: 1,
-
+ 
     width: "100%",
     paddingLeft: 15,
     borderRadius: 4,
