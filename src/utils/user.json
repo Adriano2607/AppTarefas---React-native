@@ -1,0 +1,10 @@
+{
+    "user": {
+        "id": 1,
+        "username": "admin",
+        "name": "admin",
+        "password": "admin",
+        "image": "https://imgs.search.brave.com/qHK_KwLkO7hVDKCQWllqHadzpt-WmGOzNr9add37mQI/rs:fit:860:0:0/g:ce/aHR0cHM6Ly93YWxs/cGFwZXJjYXZlLmNv/bS93cC93cDc2MzM0/MzEuanBn",
+        "token": "1a2b3c4d"
+    }
+}

@@ -3,6 +3,7 @@ import { ReactNode, createContext, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { UserDTO } from "../types/User";
 import Toast from "react-native-root-toast";
+import userJSON from "../utils/user.json"
 
 type UserContextProps = {
   token: string;
@@ -103,17 +104,15 @@ export const UserContextProvider = ({ children }: UserProviderProps) => {
 
   const login = async (username: string, password: string) => {
     try {
-      const url = "https://dummyjson.com/auth/login";
+    
+      if(username !== userJSON.user.username && userJSON.user.password !== password)
+        return
 
-      const response = await axios.post<UserDTO>(url, {
-        username,
-        password,
-      });
 
-      setUser(response.data);
-      storeUser(response.data);
-      setToken(response.data.token);
-      storeToken(response.data.token);
+      setUser(userJSON.user);
+      storeUser(userJSON.user);
+      setToken(userJSON.user.token);
+      storeToken(userJSON.user.token);
     } catch (error) {
       Toast.show("Não foi possível realizar o login", {
         duration: 3000,

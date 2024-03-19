@@ -28,14 +28,10 @@ import {BounceInDown, FlipInYRight,FlipOutYRight } from "react-native-reanimated
 import { Feather } from '@expo/vector-icons';
 import { useFonts, Inter_900Black } from '@expo-google-fonts/inter';
 import { LuckiestGuy_400Regular } from '@expo-google-fonts/luckiest-guy';
-
+import { dbExport as db} from "../utils/db";
 
 
 const Home = () => {
-
- 
-
-
 
   const [taskList, setTaskList] = useState<Task[]>([]);
   const [taskInput, setTaskInput] = useState("");
@@ -45,23 +41,14 @@ const Home = () => {
   const { getUser, user } = useContext(UserContext);
 
  
-  const openDatabase = () => {
-    const db = SQLite.openDatabase("db.db");
-    return db;
-  };
-
-  const db = openDatabase();
-
-  
   useEffect(() => {
     db.transaction((tx) => {
       tx.executeSql(
-        "create table if not exists tasks (id integer primary key not null, completed int, title text, category text);"
+        ""
       );
     });
     getTasks();
   }, []);
-  
 
   const getTasks = async () => {
     db.transaction((tx) => {
@@ -191,7 +178,7 @@ const Home = () => {
           style={{color:"white", fontFamily: 'Inter_900Black',fontSize:17}}>Bem-vindo de Volta, </Text>
 
           <Text style={{color:"white", fontFamily: 'Inter_900Black',fontSize:19}}>
-            {user.firstName + " " + user.lastName}
+            {user.name}
           </Text>
         </View>
 

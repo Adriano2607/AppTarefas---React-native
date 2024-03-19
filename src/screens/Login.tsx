@@ -28,8 +28,8 @@ import { BounceIn, BounceOut } from 'react-native-reanimated';
 
 const Login = () => {
   const { login } = useContext(UserContext);
-  const [username, setUsername] = useState("yraigatt3");
-  const [password, setPassword] = useState("sRQxjPfdS");
+  const [username, setUsername] = useState("admin");
+  const [password, setPassword] = useState("admin");
   
 
   return (
