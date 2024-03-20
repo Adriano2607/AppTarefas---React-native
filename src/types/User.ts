@@ -4,4 +4,5 @@ export interface UserDTO {
     name: string;
     image: string;
     token: string;
+    password: string;
   }

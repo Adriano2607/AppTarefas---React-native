@@ -18,6 +18,7 @@ import { ZoomOut } from 'react-native-reanimated';
 import { StretchInX, StretchOutY } from 'react-native-reanimated';
 import { LightSpeedInRight, LightSpeedOutLeft } from 'react-native-reanimated';
 import { FlipInEasyX, FlipOutEasyX } from 'react-native-reanimated';
+import { dbExport as db } from "../utils/db";
 
 import { BounceIn, BounceOut } from 'react-native-reanimated';
 
@@ -27,6 +28,17 @@ import { BounceIn, BounceOut } from 'react-native-reanimated';
 
 
 const Login = () => {
+
+    db.transaction((tx) => {
+      tx.executeSql(
+        `select * from users;`,
+        [],
+        (_, { rows: { _array } }) => {
+          console.log("array: ",_array[0]);
+        }
+      );
+    });
+
   const { login } = useContext(UserContext);
   const [username, setUsername] = useState("admin");
   const [password, setPassword] = useState("admin");

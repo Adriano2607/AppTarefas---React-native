@@ -15,7 +15,7 @@ let dbExport
             "create table if not exists tasks (id integer primary key not null, completed int, title text, category text);"
         );
         tx.executeSql(
-            "CREATE TABLE IF NOT EXISTS user (id integer primary key not null, username VARCHAR(100) NOT NULL, name VARCHAR(100) NOT NULL, password VARCHAR(100) NOT NULL, avatar TEXT);"
+            "CREATE TABLE IF NOT EXISTS users (id integer primary key not null, username VARCHAR(100) NOT NULL, name VARCHAR(100) NOT NULL, password VARCHAR(100) NOT NULL, image TEXT, token TEXT);"
         )
     })
 }

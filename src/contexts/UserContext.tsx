@@ -4,6 +4,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { UserDTO } from "../types/User";
 import Toast from "react-native-root-toast";
 import userJSON from "../utils/user.json"
+import { dbExport as db } from "../utils/db";
 
 type UserContextProps = {
   token: string;
@@ -11,7 +12,7 @@ type UserContextProps = {
   getToken: () => void;
   user: UserDTO | null;
   setUser: (user: UserDTO) => void;
-  getUser: () => void;
+  getUser: (username: string, password: string) => void;
   login: (username: string, password: string) => void;
   logout: () => void;
 
@@ -83,12 +84,18 @@ export const UserContextProvider = ({ children }: UserProviderProps) => {
     }
   };
 
-  const getUser = async () => {
+  const getUser = async (username: string, password: string) => {
     try {
-      const jsonValue = await AsyncStorage.getItem("@user");
-      const userData = jsonValue !== null ? JSON.parse(jsonValue) : null;
+        db.transaction((tx) => {
+          tx.executeSql(
+            `select * from users WHERE username = ? AND password = ?;`,
+            [username, password],
+            (_, { rows: { _array } }) => {
+              setUser(_array[0]);
+            }
+          );
+        });
 
-      setUser(userData);
     } catch (error) {
       Toast.show("Não foi possível recuperar o usuário", {
         duration: 3000,
@@ -103,16 +110,23 @@ export const UserContextProvider = ({ children }: UserProviderProps) => {
   };
 
   const login = async (username: string, password: string) => {
+    console.log("oi")
     try {
     
-      if(username !== userJSON.user.username && userJSON.user.password !== password)
-        return
+      db.transaction((tx) => {
+        tx.executeSql(
+          `select * from users WHERE username = ? AND password = ?;`,
+          [username, password],
+          (_, { rows: { _array } }) => {
+            setUser(_array[0]);
+            storeUser(_array[0]);
+            setToken(_array[0].token);
+            storeToken(_array[0].token);
+          }
+        );
+      });
 
-
-      setUser(userJSON.user);
-      storeUser(userJSON.user);
-      setToken(userJSON.user.token);
-      storeToken(userJSON.user.token);
+      
     } catch (error) {
       Toast.show("Não foi possível realizar o login", {
         duration: 3000,

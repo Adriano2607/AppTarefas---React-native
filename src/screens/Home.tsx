@@ -33,22 +33,14 @@ import { dbExport as db} from "../utils/db";
 
 const Home = () => {
 
+  console.log("db: ", db)
+
   const [taskList, setTaskList] = useState<Task[]>([]);
   const [taskInput, setTaskInput] = useState("");
   const [categoryValue, setCategoryValue] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [open, setOpen] = useState(false);
   const { getUser, user } = useContext(UserContext);
-
- 
-  useEffect(() => {
-    db.transaction((tx) => {
-      tx.executeSql(
-        ""
-      );
-    });
-    getTasks();
-  }, []);
 
   const getTasks = async () => {
     db.transaction((tx) => {
@@ -109,7 +101,7 @@ const Home = () => {
 
   const handleRemoveTask = (id: number) => {
     db.transaction((tx) => {
-      tx.executeSql("delete from tasks where id = ?", [id]);
+      tx.executeSql("delete from tasks where id = ?", id);
       tx.executeSql(
         `select * from tasks where completed = 0;`,
         [],
