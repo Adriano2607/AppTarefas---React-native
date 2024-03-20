@@ -1,58 +1,37 @@
-import {
-  StyleSheet,
-  TextInput,
-  Text,
-  TouchableOpacity,
-  Image,
-  View
-} from "react-native";
+import { Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import React, { useContext, useState } from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { UserContext } from "../contexts/UserContext";
-import { Input, Block } from "galio-framework";
+import { Input } from "galio-framework";
 import { Button } from "galio-framework";
 import { colors } from "../Colors/colors";
 import { Container } from "../styledComponents/styled";
-import Animated from 'react-native-reanimated';
-import { ZoomOut } from 'react-native-reanimated';
-import { StretchInX, StretchOutY } from 'react-native-reanimated';
-import { LightSpeedInRight, LightSpeedOutLeft } from 'react-native-reanimated';
-import { FlipInEasyX, FlipOutEasyX } from 'react-native-reanimated';
 import { dbExport as db } from "../utils/db";
-
-import { BounceIn, BounceOut } from 'react-native-reanimated';
-
-
-
-
-
+import { useNavigation } from "@react-navigation/native";
 
 const Login = () => {
-
-    db.transaction((tx) => {
-      tx.executeSql(
-        `select * from users;`,
-        [],
-        (_, { rows: { _array } }) => {
-          console.log("array: ",_array[0]);
-        }
-      );
+  db.transaction((tx) => {
+    tx.executeSql(`select * from users;`, [], (_, { rows: { _array } }) => {
+      console.log("array: ", _array[0]);
     });
+  });
 
   const { login } = useContext(UserContext);
   const [username, setUsername] = useState("admin");
   const [password, setPassword] = useState("admin");
-  
+  const navigation = useNavigation<any>();
+
+
+
+  const navigate = () => {
+    navigation.navigate("SignUp")
+  }
 
   return (
     <Container style={{ backgroundColor: "black" }}>
-    
-    <Image 
-    style={{height:200,width:200}}
-    source={require("../../assets/pngegg.png")}
-
-    />
-
+      <Image
+        style={{ height: 200, width: 200 }}
+        source={require("../../assets/pngegg.png")}
+      />
 
       <Input
         style={styles.inputContainer}
@@ -76,20 +55,17 @@ const Login = () => {
         iconColor={colors.cor4}
       />
 
-
-  
-      
-     
-     
       <Button
         textStyle={{ color: "black" }}
         color={colors.cor5}
-         onPress={() => login(username, password)}
-      style={styles.btn}
-      >LOGIN
+        onPress={() => login(username, password)}
+        style={styles.btn}
+      >
+        LOGIN
       </Button>
-    
-      
+      <TouchableOpacity onPress={navigate}>
+        <Text style={{ color: "white" }}>Ainda não tem uma conta?</Text>
+      </TouchableOpacity>
     </Container>
   );
 };
@@ -97,7 +73,7 @@ const Login = () => {
 const styles = StyleSheet.create({
   btn: {
     width: "80%",
-    alignItems:'center'
+    alignItems: "center",
   },
   title: {
     color: "white",

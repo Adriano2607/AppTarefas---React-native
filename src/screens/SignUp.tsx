@@ -1,8 +1,10 @@
-import { View, Text } from "react-native"
+import { View, Text, TextInput, TouchableOpacity } from "react-native"
 import * as SQLite from "expo-sqlite"
 import { useEffect, useState } from "react";
 import { dbExport as db } from "../utils/db"
 import { UserDTO } from "../types/User";
+import { SafeAreaView } from "react-native-safe-area-context";
+
 
 
 const SignUp = () => {
@@ -33,10 +35,37 @@ const SignUp = () => {
         setUser(null)
     };
 
-    return (
-        <View>
 
-        </View>
+
+    return (
+        <SafeAreaView>
+                    <TextInput 
+                        onChangeText={setName}
+                        value={name}
+                        placeholder="Nome"
+                    />
+                     <TextInput 
+                        onChangeText={setUsername}
+                        value={username}
+                        placeholder="UserName"
+                    /> 
+                    <TextInput
+                    onChangeText={setPassword}
+                    value={password}
+                    placeholder="Senha"
+                /> 
+                <TextInput 
+                onChangeText={setImage}
+                value={image}
+                placeholder="Imagem"
+            />
+
+            <TouchableOpacity onPress={handleAddUser}>
+            <Text>Criar</Text>
+            </TouchableOpacity>
+                
+            
+        </SafeAreaView>
     )
 }
 
