@@ -29,8 +29,8 @@ const Login = () => {
   return (
     <Container style={{ backgroundColor: "black" }}>
       <Image
-        style={{ height: 200, width: 200 }}
-        source={require("../../assets/pngegg.png")}
+        style={{ height: 150, width: 150,marginBottom:15 }}
+        source={require("../../assets/ok.png")}
       />
 
       <Input
