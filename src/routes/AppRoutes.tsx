@@ -4,6 +4,8 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import User from "../screens/User";
 import Home from "../screens/Home";
 import { colors } from "../Colors/colors";
+import { Feather } from '@expo/vector-icons';
+import { TouchableOpacity } from "react-native";
 
 const Stack = createNativeStackNavigator();
 
@@ -13,15 +15,18 @@ export const HomeRoutes = () => {
       <Stack.Screen
         name="Home"
         component={Home}
-        options={{
-          headerStyle: { 
-            backgroundColor: '#252525',
-            
-          }, 
-          
-          headerTitleStyle: { color: 'white' }, 
-         
-        }}  
+        options={({ navigation }) => ({
+          headerShown: true,
+          headerTintColor:'white',
+          headerStyle: {
+            backgroundColor: colors.cor2, 
+          },
+          headerRight: () => (
+            <TouchableOpacity onPress={() => navigation.navigate("Login")} style={{paddingRight:15}}>
+            <Feather name="plus" size={24} color="black" />            
+            </TouchableOpacity>
+          ),
+        })}
         
       />
     </Stack.Navigator>

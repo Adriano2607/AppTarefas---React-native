@@ -13,7 +13,6 @@ import { categories } from "../utils/data";
 import CategoryItem from "../components/CategoryItem";
 import ItemCard from "../components/ItemCard";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Ionicons } from "@expo/vector-icons";
 import React from "react";
 import { colors } from "../Colors/colors";
 import { TouchableOpacity } from "react-native-gesture-handler";
@@ -21,7 +20,6 @@ import { UserContext } from "../contexts/UserContext";
 import { Text } from "react-native";
 import Animated from 'react-native-reanimated';
 import {BounceInDown, FlipInYRight,FlipOutYRight } from "react-native-reanimated"
-import { Feather } from '@expo/vector-icons';
 import { useFonts, Inter_900Black } from '@expo-google-fonts/inter';
 import { LuckiestGuy_400Regular } from '@expo-google-fonts/luckiest-guy';
 import { dbExport as db} from "../utils/db";
@@ -32,10 +30,10 @@ const Home = () => {
 
   const [taskList, setTaskList] = useState<Task[]>([]);
   const [taskInput, setTaskInput] = useState("");
-  const [categoryValue, setCategoryValue] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState("all");
-  const [open, setOpen] = useState(false);
   const { getUser, user } = useContext(UserContext);
+  const [open, setOpen] = useState(false);
+    const [categoryValue, setCategoryValue] = useState(null);
 
   const getTasks = async () => {
     db.transaction((tx) => {
@@ -91,7 +89,7 @@ const Home = () => {
     }
 
     setTaskInput("");
-    setCategoryValue(null);
+    //setCategoryValue(null);
   };
 
   const handleRemoveTask = (id: number) => {
@@ -171,85 +169,7 @@ const Home = () => {
 
         <Image style={{ height: 80, width: 80 }} source={{ uri: user.image }} />
       </View>
-      <View style={styles.textinput}>
-        <TextInput
-          style={styles.input}
-          onChangeText={setTaskInput}
-          value={taskInput}
-          placeholder='Vamos Comecar?'
-          placeholderTextColor={colors.cor6}
-        />
-        <View
-          style={{ flexDirection: "row", width: "85%", alignItems: "center" }}
-        >
-          <DropDownPicker 
-            open={open}
-            value={categoryValue}
-            items={categories.filter(
-              (c) => c.value != "all" && c.value != "done"
-            )}
-            setOpen={setOpen}
-            setValue={setCategoryValue}
-            placeholder="Escolha uma categoria"
-            theme="LIGHT"
-            placeholderStyle={{
-              color: colors.cor6,
-              fontSize: 18,
-              fontWeight: "800",
-              fontFamily: 'LuckiestGuy_400Regular', 
-
-
-            }}
-            listItemLabelStyle={{
-              color: colors.cor3,
-              fontSize: 18,
-              paddingLeft: 15,
-            }}
-            dropDownContainerStyle={{
-              backgroundColor: colors.cor6,
-            }}
-            selectedItemContainerStyle={{
-              backgroundColor: colors.cor5,
-            }}
-            selectedItemLabelStyle={{
-              fontWeight: "bold",
-              fontSize: 18,
-              color: colors.cor6,
-            }}
-            labelStyle={{ 
-              color: colors.cor6, 
-              fontSize:18,
-              fontWeight: "800",
-              
-            }}
-            style={{
-              backgroundColor: "transparent",
-              borderColor: colors.cor6,
-             
-            }} textStyle={{ 
-              fontSize: 18,
-              fontFamily: 'LuckiestGuy_400Regular', 
-              color: 'black'
-            }}
-            
-
-            ArrowDownIconComponent={() => (
-              <Feather name="arrow-down-circle" size={24} color="white" />
-            )}
-            ArrowUpIconComponent={() => (
-              <Feather name="arrow-up-circle" size={24} color="white" />
-            )}zIndex={999}
-          
-          />
-
-          <TouchableOpacity
-            onPress={handleAddTask}
-            style={{ alignItems: "center", paddingLeft: 10 }}
-          >
-            <Ionicons name="add-circle-outline" size={50} color="green" />
-          </TouchableOpacity>
-        </View>
-      </View>
+     
 
       <View>
         <FlatList   
