@@ -12,14 +12,12 @@ let dbExport
 
     db.transaction((tx) => {
         tx.executeSql(
-            "create table if not exists tasks (id integer primary key not null, completed int, title text, category text);"
+            "CREATE TABLE IF NOT EXISTS tasks (id integer primary key not null, completed int, title text, category text);"
         );
         tx.executeSql(
-            "CREATE TABLE IF NOT EXISTS users (id integer primary key not null, username VARCHAR(100) NOT NULL, name VARCHAR(100) NOT NULL, password VARCHAR(100) NOT NULL, image TEXT, token TEXT);"
+            "CREATE TABLE IF NOT EXISTS users (id integer primary key not null, username VARCHAR(100) UNIQUE NOT NULL, name VARCHAR(100) NOT NULL, password VARCHAR(100) NOT NULL, image TEXT, token TEXT);"
         )
     })
 }
-
-console.log(dbExport)
 
 export {createDatabase, dbExport}

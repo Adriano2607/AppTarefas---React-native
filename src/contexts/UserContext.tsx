@@ -110,7 +110,6 @@ export const UserContextProvider = ({ children }: UserProviderProps) => {
   };
 
   const login = async (username: string, password: string) => {
-    console.log("oi")
     try {
     
       db.transaction((tx) => {
@@ -118,6 +117,7 @@ export const UserContextProvider = ({ children }: UserProviderProps) => {
           `select * from users WHERE username = ? AND password = ?;`,
           [username, password],
           (_, { rows: { _array } }) => {
+            console.log("arrayDoLogin:",_array)
             setUser(_array[0]);
             storeUser(_array[0]);
             setToken(_array[0].token);

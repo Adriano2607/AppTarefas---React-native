@@ -20,6 +20,25 @@ export const Routes = () => {
   );
 });
 
+db.transaction((tx) => {
+  tx.executeSql(`SELECT * FROM users;`, [], (_, { rows: { _array } }) => {
+    console.log("array users setados: ", _array[0]);
+  });
+});
+
+db.transaction((tx) => {
+  tx.executeSql(
+    `SELECT * FROM users;`,
+    [],
+    (_, { rows: { _array } }) => {
+      console.log("todos os logins:",_array)
+      
+    }
+  );
+});
+
+
+
 
   return (
 

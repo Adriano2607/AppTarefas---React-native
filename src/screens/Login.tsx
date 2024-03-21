@@ -10,14 +10,14 @@ import { useNavigation } from "@react-navigation/native";
 
 const Login = () => {
   db.transaction((tx) => {
-    tx.executeSql(`select * from users;`, [], (_, { rows: { _array } }) => {
-      console.log("array: ", _array[0]);
+    tx.executeSql(`SELECT * FROM users;`, [], (_, { rows: { _array } }) => {
+      console.log("array users setados: ", _array[0]);
     });
   });
 
   const { login } = useContext(UserContext);
-  const [username, setUsername] = useState("admin");
-  const [password, setPassword] = useState("admin");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const navigation = useNavigation<any>();
 
 

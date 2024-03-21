@@ -17,9 +17,7 @@ import {FlipOutYRight} from 'react-native-reanimated';
 const User = () => {
   const { getUser, user, logout } = useContext(UserContext);
 
-  useEffect(() => {
-    getUser();
-  }, []);
+
 
   return (
    <Container>

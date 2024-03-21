@@ -3,31 +3,35 @@ import { useState } from "react";
 import { UserDTO } from "../types/User";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { colors } from "../Colors/colors";
-
+import { v4 as uuid } from "uuid";
+import "react-native-get-random-values";
 import { FontAwesome } from '@expo/vector-icons';
-
+import { dbExport as db } from "../utils/db";
 
 
 const SignUp = () => {
     const [user, setUser] = useState<UserDTO | null>(null);
-    const [name, setName] = useState("Electronics Arts");
-    const [username, setUsername] = useState("EA");
-    const [password, setPassword] = useState("fifa");
-    const [imageUrl, setImageUrl] = useState("../../assets/ea.png"); 
+    const [name, setName] = useState("");
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+    const [imageUrl, setImageUrl] = useState(""); 
 
     const handleAddUser = async () => {
-        if (user != null) {
-            const token = "1a2b3c4d";
-            setUser({
-                id: undefined,
-                name,
-                username,
-                password,
-                image: imageUrl, 
-                token
-            });
-        }
-        setUser(null);
+            const token = uuid();
+
+            try {
+                db.transaction((tx) => {
+                    tx.executeSql(
+                        "INSERT INTO users (name, username, password, image, token) VALUES (?, ?, ?, ?, ?)",
+                        [name, username, password, imageUrl, token]
+                    );
+                  });
+            } catch (e) {
+                console.log("Error:", e)
+            }
+
+            console.log("conta criado: ", name)
+        
     };
 
     return (

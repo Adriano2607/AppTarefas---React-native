@@ -8,21 +8,17 @@ import {
   Image,
 } from "react-native";
 import { Task } from "../types/Task";
-import { v4 as uuid } from "uuid";
 import DropDownPicker from "react-native-dropdown-picker";
 import { categories } from "../utils/data";
 import CategoryItem from "../components/CategoryItem";
 import ItemCard from "../components/ItemCard";
-import "react-native-get-random-values";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
-
 import React from "react";
 import { colors } from "../Colors/colors";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { UserContext } from "../contexts/UserContext";
 import { Text } from "react-native";
-import * as SQLite from "expo-sqlite"
 import Animated from 'react-native-reanimated';
 import {BounceInDown, FlipInYRight,FlipOutYRight } from "react-native-reanimated"
 import { Feather } from '@expo/vector-icons';
@@ -33,7 +29,6 @@ import { dbExport as db} from "../utils/db";
 
 const Home = () => {
 
-  console.log("db: ", db)
 
   const [taskList, setTaskList] = useState<Task[]>([]);
   const [taskInput, setTaskInput] = useState("");
@@ -45,7 +40,7 @@ const Home = () => {
   const getTasks = async () => {
     db.transaction((tx) => {
       tx.executeSql(
-        `select * from tasks where completed = 0;`,
+        `SELECT * FROM tasks WHERE completed = 0;`,
         [],
         (_, { rows: { _array } }) => {
           setTaskList(_array);
@@ -57,7 +52,7 @@ const Home = () => {
   const getTasksByCategory = (category: string) => {
     db.transaction((tx) => {
       tx.executeSql(
-        `select * from tasks where completed = 0 and category = ?;`,
+        `SELECT * FROM tasks WHERE completed = 0 AND category = ?;`,
         [category],
         (_, { rows: { _array } }) => {
           setTaskList(_array);
@@ -69,7 +64,7 @@ const Home = () => {
   const getCompletedTasks = () => {
     db.transaction((tx) => {
       tx.executeSql(
-        `select * from tasks where completed = 1;`,
+        `SELECT * FROM tasks WHERE completed = 1;`,
         [],
         (_, { rows: { _array } }) => {
           setTaskList(_array);
@@ -82,11 +77,11 @@ const Home = () => {
     if (taskInput !== "" && categoryValue) {
       db.transaction((tx) => {
         tx.executeSql(
-          "insert into tasks (completed, title, category) values (0, ?, ?)",
+          "INSERT INTO tasks (completed, title, category) VALUES (0, ?, ?);",
           [taskInput, categoryValue]
         );
         tx.executeSql(
-          `select * from tasks where completed = 0;`,
+          `SELECT * FROM tasks WHERE completed = 0;`,
           [],
           (_, { rows: { _array } }) => {
             setTaskList(_array);
@@ -101,9 +96,9 @@ const Home = () => {
 
   const handleRemoveTask = (id: number) => {
     db.transaction((tx) => {
-      tx.executeSql("delete from tasks where id = ?", id);
+      tx.executeSql("DELETE FROM tasks WHERE id = ?;", id);
       tx.executeSql(
-        `select * from tasks where completed = 0;`,
+        `SELECT * FROM tasks WHERE completed = 0;`,
         [],
         (_, { rows: { _array } }) => {
           setTaskList(_array);
@@ -114,9 +109,9 @@ const Home = () => {
 
   const handleDoneTask = (id: number) => {
     db.transaction((tx) => {
-      tx.executeSql("update tasks set completed = ? where id = ? ", [1, id]);
+      tx.executeSql("UPDATE tasks SET completed = ? WHERE id = ? ;", [1, id]);
       tx.executeSql(
-        `select * from tasks where completed = 0;`,
+        `SELECT * FROM tasks WHERE completed = 0;`,
         [],
         (_, { rows: { _array } }) => {
           setTaskList(_array);
