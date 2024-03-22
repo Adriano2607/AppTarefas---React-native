@@ -4,11 +4,12 @@ import { categories } from "../utils/data";
 import { View } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Swipeable } from "react-native-gesture-handler";
-import React from "react";
+import React, { useContext } from "react";
 import { LightSpeedInRight, LightSpeedOutLeft } from 'react-native-reanimated';
 import Animated from 'react-native-reanimated';
 import { SlideInRight, SlideOutLeft } from 'react-native-reanimated';
 import { useCustomFonts } from '../fonts/useCustomFonts';
+import { TaskContext } from "../contexts/TaskContext";
 
 
 
@@ -23,14 +24,20 @@ interface Props {
 const ItemCard = ({ task, handleRemoveTask, handleDoneTask }: Props) => {
   const category = categories.filter((c) => c.value === task.category);
 
+  const { doneTask, removeTask, tasks } = useContext(TaskContext)
+
   const handleDelete = () => {
     Alert.alert("Tarefas", "Confirmar Exclusao?", [
       { text: "Nao", style: "cancel" },
-      { text: "sim", onPress: () => handleRemoveTask(task.id) },
+      { text: "sim", onPress: () => removeTask(task.id) },
     ]);
   };
 
   const LeftAction = () => {
+
+    const handleDoneTask = (id: number) => {
+      doneTask(id)
+    }
 
     if (task.category === "done" && task.completed !== 0) {
       return null;

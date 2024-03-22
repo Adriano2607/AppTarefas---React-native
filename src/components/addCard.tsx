@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useContext, useState } from "react"
 import DropDownPicker from "react-native-dropdown-picker"
 import { categories } from "../utils/data"
 import { colors } from "../Colors/colors";
@@ -6,10 +6,20 @@ import { Feather } from '@expo/vector-icons';
 import { SafeAreaView } from "react-native-safe-area-context";
 import { TextInput, TouchableOpacity, View,StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { TaskContext } from "../contexts/TaskContext";
 
 
 
 const Appcard = () =>{
+
+  const { addTask } = useContext(TaskContext);
+
+  const handleAddTask = async () => {
+    addTask(taskInput, categoryValue)
+    setTaskInput("");
+    //setCategoryValue(null);
+  };
+
     const [open, setOpen] = useState(false);
     const [categoryValue, setCategoryValue] = useState(null);
     const [taskInput, setTaskInput] = useState("");
@@ -33,7 +43,7 @@ const Appcard = () =>{
          
 
           <TouchableOpacity
-            onPress={handleAddTask}
+            onPress={()=>addTask}
             style={{ alignItems: "center", paddingLeft: 10 }}
           >
             <Ionicons name="add-circle-outline" size={50} color="green" />

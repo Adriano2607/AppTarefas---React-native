@@ -23,9 +23,17 @@ import {BounceInDown, FlipInYRight,FlipOutYRight } from "react-native-reanimated
 import { useFonts, Inter_900Black } from '@expo-google-fonts/inter';
 import { LuckiestGuy_400Regular } from '@expo-google-fonts/luckiest-guy';
 import { dbExport as db} from "../utils/db";
+import { TaskContext } from "../contexts/TaskContext";
 
 
 const Home = () => {
+
+  const { getTasks,
+    getTasksByCategory,
+    getCompletedTasks,
+    removeTask,
+    doneTask,
+  tasks } = useContext(TaskContext);
 
 
   const [taskList, setTaskList] = useState<Task[]>([]);
@@ -33,105 +41,40 @@ const Home = () => {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const { getUser, user } = useContext(UserContext);
   const [open, setOpen] = useState(false);
-    const [categoryValue, setCategoryValue] = useState(null);
+  const [categoryValue, setCategoryValue] = useState(null);
 
-  const getTasks = async () => {
-    db.transaction((tx) => {
-      tx.executeSql(
-        `SELECT * FROM tasks WHERE completed = 0;`,
-        [],
-        (_, { rows: { _array } }) => {
-          setTaskList(_array);
-        }
-      );
-    });
-  };
+  const handleGetTasks = () => {
+    setTaskList(tasks)    
+  }
 
-  const getTasksByCategory = (category: string) => {
-    db.transaction((tx) => {
-      tx.executeSql(
-        `SELECT * FROM tasks WHERE completed = 0 AND category = ?;`,
-        [category],
-        (_, { rows: { _array } }) => {
-          setTaskList(_array);
-        }
-      );
-    });
-  };
-
-  const getCompletedTasks = () => {
-    db.transaction((tx) => {
-      tx.executeSql(
-        `SELECT * FROM tasks WHERE completed = 1;`,
-        [],
-        (_, { rows: { _array } }) => {
-          setTaskList(_array);
-        }
-      );
-    });
-  };
-
-  const handleAddTask = async () => {
-    if (taskInput !== "" && categoryValue) {
-      db.transaction((tx) => {
-        tx.executeSql(
-          "INSERT INTO tasks (completed, title, category) VALUES (0, ?, ?);",
-          [taskInput, categoryValue]
-        );
-        tx.executeSql(
-          `SELECT * FROM tasks WHERE completed = 0;`,
-          [],
-          (_, { rows: { _array } }) => {
-            setTaskList(_array);
-          }
-        );
-      });
-    }
-
-    setTaskInput("");
-    //setCategoryValue(null);
-  };
-
-  const handleRemoveTask = (id: number) => {
-    db.transaction((tx) => {
-      tx.executeSql("DELETE FROM tasks WHERE id = ?;", id);
-      tx.executeSql(
-        `SELECT * FROM tasks WHERE completed = 0;`,
-        [],
-        (_, { rows: { _array } }) => {
-          setTaskList(_array);
-        }
-      );
-    });
-  };
+  const handleGetTasksByCategory = (category: string) => {
+    getTasksByCategory(category)
+    setTaskList(tasks)
+  }
 
   const handleDoneTask = (id: number) => {
-    db.transaction((tx) => {
-      tx.executeSql("UPDATE tasks SET completed = ? WHERE id = ? ;", [1, id]);
-      tx.executeSql(
-        `SELECT * FROM tasks WHERE completed = 0;`,
-        [],
-        (_, { rows: { _array } }) => {
-          setTaskList(_array);
-        }
-      );
-    });
-  };
+    doneTask(id)
+    setTaskList(tasks)
+  }
+
+  const handleRemoveTask = (id:number) => {
+    removeTask(id);
+    setTaskList(tasks)
+  }
 
   const handleSelectCategory = (type: string) => {
     setSelectedCategory(type);
     switch (type) {
       case "all":
-        getTasks();
+        handleGetTasks();
         break;
       case "done":
         getCompletedTasks();
         break;
       default:
-        getTasksByCategory(type);
+        handleGetTasksByCategory(type);
     }
   };
-
 
   console.log(taskList)
   let [fontsLoaded, fontError] = useFonts({
