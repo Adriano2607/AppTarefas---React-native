@@ -11,7 +11,10 @@ import { dbExport as db } from "../utils/db";
 export const Routes = () => {
  const { getToken, token } = useContext(UserContext);
 
+
  createDatabase()
+
+ 
 
  db.transaction((tx) => {
   tx.executeSql(
@@ -25,6 +28,7 @@ db.transaction((tx) => {
     console.log("array users setados: ", _array[0]);
   });
 });
+
 
 db.transaction((tx) => {
   tx.executeSql(

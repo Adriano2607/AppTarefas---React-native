@@ -16,8 +16,8 @@ const Login = () => {
   });
 
   const { login } = useContext(UserContext);
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("admin");
+  const [password, setPassword] = useState("admin");
   const navigation = useNavigation<any>();
 
 

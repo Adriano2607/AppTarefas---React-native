@@ -75,16 +75,9 @@ const ItemCard = ({ task, handleRemoveTask, handleDoneTask }: Props) => {
     );
   };
 
-  const fontsLoaded = useCustomFonts();
-  
-  if (!fontsLoaded) {
-    return null;
-  }
-
+ 
 
   return (
-
-    
     <View style={{justifyContent:'center',flex:1}}>
       <Swipeable
         renderLeftActions={LeftAction}

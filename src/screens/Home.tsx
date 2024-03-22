@@ -1,40 +1,29 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useContext, useEffect, useState } from "react";
-import {
-  View,
-  StyleSheet,
-  FlatList,
-  TextInput,
-  Image,
-} from "react-native";
+import { useContext, useState } from "react";
+import { View, StyleSheet, FlatList,Image } from "react-native";
 import { Task } from "../types/Task";
-import DropDownPicker from "react-native-dropdown-picker";
 import { categories } from "../utils/data";
 import CategoryItem from "../components/CategoryItem";
 import ItemCard from "../components/ItemCard";
 import { SafeAreaView } from "react-native-safe-area-context";
 import React from "react";
 import { colors } from "../Colors/colors";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import { UserContext } from "../contexts/UserContext";
 import { Text } from "react-native";
-import Animated from 'react-native-reanimated';
-import {BounceInDown, FlipInYRight,FlipOutYRight } from "react-native-reanimated"
-import { useFonts, Inter_900Black } from '@expo-google-fonts/inter';
-import { LuckiestGuy_400Regular } from '@expo-google-fonts/luckiest-guy';
-import { dbExport as db} from "../utils/db";
+import Animated from "react-native-reanimated";
+import { FlipInYRight, FlipOutYRight } from "react-native-reanimated";
+import { useFonts, Inter_900Black } from "@expo-google-fonts/inter";
+import { LuckiestGuy_400Regular } from "@expo-google-fonts/luckiest-guy";
 import { TaskContext } from "../contexts/TaskContext";
 
-
 const Home = () => {
-
-  const { getTasks,
+  const {
+    getTasks,
     getTasksByCategory,
     getCompletedTasks,
     removeTask,
     doneTask,
-  tasks } = useContext(TaskContext);
-
+    tasks,
+  } = useContext(TaskContext);
 
   const [taskList, setTaskList] = useState<Task[]>([]);
   const [taskInput, setTaskInput] = useState("");
@@ -44,23 +33,23 @@ const Home = () => {
   const [categoryValue, setCategoryValue] = useState(null);
 
   const handleGetTasks = () => {
-    setTaskList(tasks)    
-  }
+    setTaskList(tasks);
+  };
 
   const handleGetTasksByCategory = (category: string) => {
-    getTasksByCategory(category)
-    setTaskList(tasks)
-  }
+    getTasksByCategory(category);
+    setTaskList(tasks);
+  };
 
   const handleDoneTask = (id: number) => {
-    doneTask(id)
-    setTaskList(tasks)
-  }
+    doneTask(id);
+    setTaskList(tasks);
+  };
 
-  const handleRemoveTask = (id:number) => {
+  const handleRemoveTask = (id: number) => {
     removeTask(id);
-    setTaskList(tasks)
-  }
+    setTaskList(tasks);
+  };
 
   const handleSelectCategory = (type: string) => {
     setSelectedCategory(type);
@@ -76,10 +65,12 @@ const Home = () => {
     }
   };
 
-  console.log(taskList)
+  console.log("tasklist " + taskList);
+
+
   let [fontsLoaded, fontError] = useFonts({
     Inter_900Black,
-    LuckiestGuy_400Regular
+    LuckiestGuy_400Regular,
   });
 
   if (!fontsLoaded && !fontError) {
@@ -98,25 +89,35 @@ const Home = () => {
           padding: 10,
           borderRadius: 10,
           backgroundColor: colors.cor3,
-
         }}
       >
         <View>
           <Text
-          style={{color:"white", fontFamily: 'Inter_900Black',fontSize:17}}>Bem-vindo de Volta, </Text>
+            style={{
+              color: "white",
+              fontFamily: "Inter_900Black",
+              fontSize: 17,
+            }}
+          >
+            Bem-vindo de Volta,{" "}
+          </Text>
 
-          <Text style={{color:"white", fontFamily: 'Inter_900Black',fontSize:19}}>
-            {user.name}
+          <Text
+            style={{
+              color: "white",
+              fontFamily: "Inter_900Black",
+              fontSize: 19,
+            }}
+          >
+            {/* {user.name} */}
           </Text>
         </View>
 
-        <Image style={{ height: 80, width: 80 }} source={{ uri: user.image }} />
+        {/* <Image style={{ height: 80, width: 80 }} source={{ uri: user.image }} /> */}
       </View>
-     
 
       <View>
-        <FlatList   
-          style={{zIndex:998}}
+        <FlatList
           horizontal
           data={categories}
           showsHorizontalScrollIndicator={false}
@@ -128,14 +129,20 @@ const Home = () => {
             />
           )}
           keyExtractor={(item) => item.id.toString()}
-              
         />
       </View>
 
       <Animated.FlatList
-      entering={FlipInYRight} 
-       exiting={FlipOutYRight}
-        data={taskList }
+        entering={FlipInYRight}
+        exiting={FlipOutYRight}
+        data={taskList}
+        ListEmptyComponent={
+          <Animated.View   entering={FlipInYRight}   exiting={FlipOutYRight}>
+            <Text style={{ color: "white", alignSelf: "center" }}>
+              Não há tarefas disponíveis.
+            </Text>
+          </Animated.View>
+        }
         renderItem={({ item }) => {
           if (selectedCategory === "done" && !item.completed) {
             return null;
@@ -153,9 +160,6 @@ const Home = () => {
         }}
         keyExtractor={(item) => item.id.toString()}
       />
-
-
-
     </SafeAreaView>
   );
 };
@@ -166,12 +170,13 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     gap: 15,
     marginBottom: 10,
-  }, input: {
+  },
+  input: {
     borderBottomWidth: 1,
     borderLeftWidth: 4,
     borderRightWidth: 4,
     borderTopWidth: 1,
- 
+
     width: "100%",
     paddingLeft: 15,
     borderRadius: 4,
@@ -182,7 +187,7 @@ const styles = StyleSheet.create({
     fontWeight: "800",
     fontSize: 17,
     color: colors.cor6,
-  }
+  },
 });
 
 export default Home;

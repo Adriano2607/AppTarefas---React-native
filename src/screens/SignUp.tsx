@@ -1,4 +1,4 @@
-import { TextInput, TouchableOpacity } from "react-native"
+import { TextInput, TouchableOpacity,Text, Alert } from "react-native"
 import { useState } from "react";
 import { UserDTO } from "../types/User";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -10,11 +10,21 @@ import { dbExport as db } from "../utils/db";
 
 
 const SignUp = () => {
-    const [user, setUser] = useState<UserDTO | null>(null);
+  
     const [name, setName] = useState("");
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [imageUrl, setImageUrl] = useState(""); 
+
+const valida = () => {
+    if(!name || !username || !password)  {
+        Alert.alert("Presta Atencao !!!")
+         return
+    }    
+    handleAddUser()
+}
+
+
 
     const handleAddUser = async () => {
             const token = uuid();
@@ -23,12 +33,14 @@ const SignUp = () => {
                 db.transaction((tx) => {
                     tx.executeSql(
                         "INSERT INTO users (name, username, password, image, token) VALUES (?, ?, ?, ?, ?)",
-                        [name, username, password, imageUrl, token]
+                        [name, username, password, imageUrl ? imageUrl : 'https://media.contentapi.ea.com/content/dam/eacom/common/medallion-violet.png', token]
                     );
                   });
             } catch (e) {
                 console.log("Error:", e)
             }
+
+            Alert.alert("Sucesso")
 
             console.log("conta criado: ", name)
         
@@ -65,8 +77,8 @@ const SignUp = () => {
                 placeholder="Imagem"
             />
 
-            <TouchableOpacity onPress={handleAddUser} style={{borderRadius:10,borderColor:colors.cor6,padding:10}}>
-                <FontAwesome name="check-circle" size={60} color="white" />
+            <TouchableOpacity onPress={ () => valida()} style={{borderRadius:10,borderColor:colors.cor6,padding:10}}>
+               <Text style={{color:'white'}}>Criar</Text>
             </TouchableOpacity>
         </SafeAreaView>
     );

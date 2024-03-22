@@ -4,8 +4,8 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import User from "../screens/User";
 import Home from "../screens/Home";
 import { colors } from "../Colors/colors";
-import { Feather } from '@expo/vector-icons';
-import { TouchableOpacity } from "react-native";
+import CreateTask from "../components/addCard";
+import Menuheader from "../components/Menuheader";
 
 const Stack = createNativeStackNavigator();
 
@@ -21,13 +21,20 @@ export const HomeRoutes = () => {
           headerStyle: {
             backgroundColor: colors.cor2, 
           },
-          headerRight: () => (
-            <TouchableOpacity onPress={() => navigation.navigate("Login")} style={{paddingRight:15}}>
-            <Feather name="plus" size={24} color="black" />            
-            </TouchableOpacity>
-          ),
+          headerRight: () => <Menuheader />,
         })}
         
+      />
+       <Stack.Screen
+        name="Create"
+        component={CreateTask}
+        options={{
+          headerTitle: "Criar",
+          headerTintColor:'white',
+          headerStyle: {
+            backgroundColor: colors.cor2,
+          },
+        }}
       />
     </Stack.Navigator>
   );
