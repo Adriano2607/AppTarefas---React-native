@@ -4,7 +4,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { UserDTO } from "../types/User";
 import Toast from "react-native-root-toast";
 import userJSON from "../utils/user.json"
-import { dbExport as db } from "../utils/db";
+import { createDatabase, openDatabase } from "../utils/db";
 
 type UserContextProps = {
   token: string;
@@ -29,7 +29,7 @@ export const UserContext = createContext<UserContextProps>(
 export const UserContextProvider = ({ children }: UserProviderProps) => {
   const [token, setToken] = useState("");
   const [user, setUser] = useState<UserDTO | null>(null);
-
+const db = openDatabase()
   const storeToken = async (value: string) => {
     try {
       await AsyncStorage.setItem("@token", value);

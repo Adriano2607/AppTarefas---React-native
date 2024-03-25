@@ -5,15 +5,10 @@ import { Input } from "galio-framework";
 import { Button } from "galio-framework";
 import { colors } from "../Colors/colors";
 import { Container } from "../styledComponents/styled";
-import { dbExport as db } from "../utils/db";
+import { openDatabase} from "../utils/db";
 import { useNavigation } from "@react-navigation/native";
 
 const Login = () => {
-  db.transaction((tx) => {
-    tx.executeSql(`SELECT * FROM users;`, [], (_, { rows: { _array } }) => {
-      console.log("array users setados: ", _array[0]);
-    });
-  });
 
   const { login } = useContext(UserContext);
   const [username, setUsername] = useState("admin");

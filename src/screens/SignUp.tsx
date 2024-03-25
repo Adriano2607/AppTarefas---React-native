@@ -6,11 +6,11 @@ import { colors } from "../Colors/colors";
 import { v4 as uuid } from "uuid";
 import "react-native-get-random-values";
 import { FontAwesome } from '@expo/vector-icons';
-import { dbExport as db } from "../utils/db";
+import { openDatabase } from "../utils/db";
 
 
 const SignUp = () => {
-  
+  const db = openDatabase()
     const [name, setName] = useState("");
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
